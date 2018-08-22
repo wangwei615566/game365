@@ -7,7 +7,9 @@ public class Game {
 
     private String externalGameCode;
 
-    private Integer gameClassifyId;
+    private Long gameClassifyId;
+
+    private String name;
 
     private String leftTeam;
 
@@ -43,11 +45,11 @@ public class Game {
         this.externalGameCode = externalGameCode == null ? null : externalGameCode.trim();
     }
 
-    public Integer getGameClassifyId() {
+    public Long getGameClassifyId() {
         return gameClassifyId;
     }
 
-    public void setGameClassifyId(Integer gameClassifyId) {
+    public void setGameClassifyId(Long gameClassifyId) {
         this.gameClassifyId = gameClassifyId;
     }
 
@@ -107,19 +109,27 @@ public class Game {
         this.state = state;
     }
 
-    public Date getUdpateTime() {
-        return updateTime;
-    }
-
-    public void setUdpateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

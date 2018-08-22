@@ -2,6 +2,7 @@ package com.wz.cashloan.core.mapper;
 
 import com.wz.cashloan.core.common.mapper.RDBatisDao;
 import com.wz.cashloan.core.model.GameClassify;
+
 @RDBatisDao
 public interface GameClassifyMapper {
     int deleteByPrimaryKey(Long id);
@@ -15,4 +16,6 @@ public interface GameClassifyMapper {
     int updateByPrimaryKeySelective(GameClassify record);
 
     int updateByPrimaryKey(GameClassify record);
+
+    GameClassify selectByName(String name);
 }

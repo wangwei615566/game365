@@ -18,6 +18,12 @@
     from game_classify
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from game_classify
+    where name = #{name,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from game_classify
     where id = #{id,jdbcType=BIGINT}

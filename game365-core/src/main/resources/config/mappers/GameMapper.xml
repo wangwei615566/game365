@@ -4,7 +4,8 @@
   <resultMap id="BaseResultMap" type="com.wz.cashloan.core.model.Game" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="external_game_code" property="externalGameCode" jdbcType="VARCHAR" />
-    <result column="game_classify_id" property="gameClassifyId" jdbcType="INTEGER" />
+    <result column="game_classify_id" property="gameClassifyId" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="left_team" property="leftTeam" jdbcType="VARCHAR" />
     <result column="left_team_img" property="leftTeamImg" jdbcType="VARCHAR" />
     <result column="right_team" property="rightTeam" jdbcType="VARCHAR" />
@@ -16,26 +17,32 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, external_game_code, game_classify_id, left_team, left_team_img, right_team, right_team_img, 
+    id, external_game_code, game_classify_id, `name`,left_team, left_team_img, right_team, right_team_img,
     contest_date, contest_time, state, update_time, create_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from game
     where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectByGameCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from game
+    where external_game_code = #{externalGameCode,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from game
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.wz.cashloan.core.model.Game" >
-    insert into game (id, external_game_code, game_classify_id, 
+    insert into game (id, external_game_code, `name`,game_classify_id,
       left_team, left_team_img, right_team, 
       right_team_img, contest_date, contest_time, 
       state, update_time, create_time
       )
-    values (#{id,jdbcType=BIGINT}, #{externalGameCode,jdbcType=VARCHAR}, #{gameClassifyId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=BIGINT}, #{externalGameCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},#{gameClassifyId,jdbcType=BIGINT},
       #{leftTeam,jdbcType=VARCHAR}, #{leftTeamImg,jdbcType=VARCHAR}, #{rightTeam,jdbcType=VARCHAR}, 
       #{rightTeamImg,jdbcType=VARCHAR}, #{contestDate,jdbcType=DATE}, #{contestTime,jdbcType=TIME}, 
       #{state,jdbcType=TINYINT}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
@@ -89,7 +96,7 @@
         #{externalGameCode,jdbcType=VARCHAR},
       </if>
       <if test="gameClassifyId != null" >
-        #{gameClassifyId,jdbcType=INTEGER},
+        #{gameClassifyId,jdbcType=BIGINT},
       </if>
       <if test="leftTeam != null" >
         #{leftTeam,jdbcType=VARCHAR},
@@ -127,7 +134,7 @@
         external_game_code = #{externalGameCode,jdbcType=VARCHAR},
       </if>
       <if test="gameClassifyId != null" >
-        game_classify_id = #{gameClassifyId,jdbcType=INTEGER},
+        game_classify_id = #{gameClassifyId,jdbcType=BIGINT},
       </if>
       <if test="leftTeam != null" >
         left_team = #{leftTeam,jdbcType=VARCHAR},
@@ -162,7 +169,7 @@
   <update id="updateByPrimaryKey" parameterType="com.wz.cashloan.core.model.Game" >
     update game
     set external_game_code = #{externalGameCode,jdbcType=VARCHAR},
-      game_classify_id = #{gameClassifyId,jdbcType=INTEGER},
+      game_classify_id = #{gameClassifyId,jdbcType=BIGINT},
       left_team = #{leftTeam,jdbcType=VARCHAR},
       left_team_img = #{leftTeamImg,jdbcType=VARCHAR},
       right_team = #{rightTeam,jdbcType=VARCHAR},

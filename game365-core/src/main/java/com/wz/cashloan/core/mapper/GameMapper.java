@@ -15,4 +15,6 @@ public interface GameMapper {
     int updateByPrimaryKeySelective(Game record);
 
     int updateByPrimaryKey(Game record);
+
+    Game selectByGameCode(String code);
 }
