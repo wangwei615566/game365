@@ -8,17 +8,11 @@ public class UserCashLog {
 
     private Long userId;
 
-    private Byte cashWay;
-
     private String accountNo;
 
     private String accountName;
 
     private BigDecimal amount;
-
-    private BigDecimal fee;
-    
-    private Long inviteId;
 
     private Byte state;
 
@@ -38,14 +32,6 @@ public class UserCashLog {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public Byte getCashWay() {
-        return cashWay;
-    }
-
-    public void setCashWay(Byte cashWay) {
-        this.cashWay = cashWay;
     }
 
     public String getAccountNo() {
@@ -72,12 +58,12 @@ public class UserCashLog {
         this.amount = amount;
     }
 
-    public BigDecimal getFee() {
-        return fee;
+    public Byte getState() {
+        return state;
     }
 
-    public void setFee(BigDecimal fee) {
-        this.fee = fee;
+    public void setState(Byte state) {
+        this.state = state;
     }
 
     public Date getCreateTime() {
@@ -86,35 +72,5 @@ public class UserCashLog {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
-    }
-
-    public UserCashLog() {
-
-    }
-
-    public UserCashLog(Long userId, Byte cashWay, String accountNo, String accountName, BigDecimal amount, BigDecimal fee, Date createTime) {
-        this.userId = userId;
-        this.cashWay = cashWay;
-        this.accountNo = accountNo;
-        this.accountName = accountName;
-        this.amount = amount;
-        this.fee = fee;
-        this.createTime = createTime;
-    }
-
-    public Long getInviteId() {
-		return inviteId;
-	}
-
-	public void setInviteId(Long inviteId) {
-		this.inviteId = inviteId;
-	}
-
-	public Byte getState() {
-        return state;
-    }
-
-    public void setState(Byte state) {
-        this.state = state;
     }
 }

@@ -9,35 +9,21 @@ public class User {
 
     private String loginPwd;
 
-    private Date loginpwdModifyTime;
-
-    private String registerClient;
+    private Date loginpwdModify;
 
     private String invitationCode;
 
-    private String deviceId;
+    private Integer level;
 
-    private Long levelId;
+    private String registerClient;
 
     private String registerIp;
 
     private String loginIp;
 
-    private byte state;
-
-    private byte vipState;
-
     private Date updateTime;
 
     private Date createTime;
-
-    public byte getState() {
-        return state;
-    }
-
-    public void setState(byte state) {
-        this.state = state;
-    }
 
     public Long getId() {
         return id;
@@ -63,20 +49,12 @@ public class User {
         this.loginPwd = loginPwd == null ? null : loginPwd.trim();
     }
 
-    public Date getLoginpwdModifyTime() {
-        return loginpwdModifyTime;
+    public Date getLoginpwdModify() {
+        return loginpwdModify;
     }
 
-    public void setLoginpwdModifyTime(Date loginpwdModifyTime) {
-        this.loginpwdModifyTime = loginpwdModifyTime;
-    }
-
-    public String getRegisterClient() {
-        return registerClient;
-    }
-
-    public void setRegisterClient(String registerClient) {
-        this.registerClient = registerClient == null ? null : registerClient.trim();
+    public void setLoginpwdModify(Date loginpwdModify) {
+        this.loginpwdModify = loginpwdModify;
     }
 
     public String getInvitationCode() {
@@ -87,20 +65,20 @@ public class User {
         this.invitationCode = invitationCode == null ? null : invitationCode.trim();
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public Integer getLevel() {
+        return level;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
-    public Long getLevelId() {
-        return levelId;
+    public String getRegisterClient() {
+        return registerClient;
     }
 
-    public void setLevelId(Long levelId) {
-        this.levelId = levelId;
+    public void setRegisterClient(String registerClient) {
+        this.registerClient = registerClient == null ? null : registerClient.trim();
     }
 
     public String getRegisterIp() {
@@ -133,13 +111,5 @@ public class User {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
-    }
-
-    public byte getVipState() {
-        return vipState;
-    }
-
-    public void setVipState(byte vipState) {
-        this.vipState = vipState;
     }
 }

@@ -111,7 +111,12 @@
 		  <artifactId>okhttp</artifactId>
 		  <version>3.3.0</version>
 		</dependency>
-		<!-- provice by apache poi end -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.11.2</version>
+        </dependency>
+        <!-- provice by apache poi end -->
 
 		<!-- <dependency>
 			<groupId>servlets.com</groupId>

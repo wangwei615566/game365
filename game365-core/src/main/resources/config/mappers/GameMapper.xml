@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wz.cashloan.core.mapper.GameMapper" >
+  <resultMap id="BaseResultMap" type="com.wz.cashloan.core.model.Game" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="external_game_code" property="externalGameCode" jdbcType="VARCHAR" />
+    <result column="game_classify_id" property="gameClassifyId" jdbcType="INTEGER" />
+    <result column="left_team" property="leftTeam" jdbcType="VARCHAR" />
+    <result column="left_team_img" property="leftTeamImg" jdbcType="VARCHAR" />
+    <result column="right_team" property="rightTeam" jdbcType="VARCHAR" />
+    <result column="right_team_img" property="rightTeamImg" jdbcType="VARCHAR" />
+    <result column="contest_date" property="contestDate" jdbcType="DATE" />
+    <result column="contest_time" property="contestTime" jdbcType="TIME" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, external_game_code, game_classify_id, left_team, left_team_img, right_team, right_team_img, 
+    contest_date, contest_time, state, update_time, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from game
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from game
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wz.cashloan.core.model.Game" >
+    insert into game (id, external_game_code, game_classify_id, 
+      left_team, left_team_img, right_team, 
+      right_team_img, contest_date, contest_time, 
+      state, update_time, create_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{externalGameCode,jdbcType=VARCHAR}, #{gameClassifyId,jdbcType=INTEGER}, 
+      #{leftTeam,jdbcType=VARCHAR}, #{leftTeamImg,jdbcType=VARCHAR}, #{rightTeam,jdbcType=VARCHAR}, 
+      #{rightTeamImg,jdbcType=VARCHAR}, #{contestDate,jdbcType=DATE}, #{contestTime,jdbcType=TIME}, 
+      #{state,jdbcType=TINYINT}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wz.cashloan.core.model.Game" >
+    insert into game
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="externalGameCode != null" >
+        external_game_code,
+      </if>
+      <if test="gameClassifyId != null" >
+        game_classify_id,
+      </if>
+      <if test="leftTeam != null" >
+        left_team,
+      </if>
+      <if test="leftTeamImg != null" >
+        left_team_img,
+      </if>
+      <if test="rightTeam != null" >
+        right_team,
+      </if>
+      <if test="rightTeamImg != null" >
+        right_team_img,
+      </if>
+      <if test="contestDate != null" >
+        contest_date,
+      </if>
+      <if test="contestTime != null" >
+        contest_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="externalGameCode != null" >
+        #{externalGameCode,jdbcType=VARCHAR},
+      </if>
+      <if test="gameClassifyId != null" >
+        #{gameClassifyId,jdbcType=INTEGER},
+      </if>
+      <if test="leftTeam != null" >
+        #{leftTeam,jdbcType=VARCHAR},
+      </if>
+      <if test="leftTeamImg != null" >
+        #{leftTeamImg,jdbcType=VARCHAR},
+      </if>
+      <if test="rightTeam != null" >
+        #{rightTeam,jdbcType=VARCHAR},
+      </if>
+      <if test="rightTeamImg != null" >
+        #{rightTeamImg,jdbcType=VARCHAR},
+      </if>
+      <if test="contestDate != null" >
+        #{contestDate,jdbcType=DATE},
+      </if>
+      <if test="contestTime != null" >
+        #{contestTime,jdbcType=TIME},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=TINYINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wz.cashloan.core.model.Game" >
+    update game
+    <set >
+      <if test="externalGameCode != null" >
+        external_game_code = #{externalGameCode,jdbcType=VARCHAR},
+      </if>
+      <if test="gameClassifyId != null" >
+        game_classify_id = #{gameClassifyId,jdbcType=INTEGER},
+      </if>
+      <if test="leftTeam != null" >
+        left_team = #{leftTeam,jdbcType=VARCHAR},
+      </if>
+      <if test="leftTeamImg != null" >
+        left_team_img = #{leftTeamImg,jdbcType=VARCHAR},
+      </if>
+      <if test="rightTeam != null" >
+        right_team = #{rightTeam,jdbcType=VARCHAR},
+      </if>
+      <if test="rightTeamImg != null" >
+        right_team_img = #{rightTeamImg,jdbcType=VARCHAR},
+      </if>
+      <if test="contestDate != null" >
+        contest_date = #{contestDate,jdbcType=DATE},
+      </if>
+      <if test="contestTime != null" >
+        contest_time = #{contestTime,jdbcType=TIME},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=TINYINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wz.cashloan.core.model.Game" >
+    update game
+    set external_game_code = #{externalGameCode,jdbcType=VARCHAR},
+      game_classify_id = #{gameClassifyId,jdbcType=INTEGER},
+      left_team = #{leftTeam,jdbcType=VARCHAR},
+      left_team_img = #{leftTeamImg,jdbcType=VARCHAR},
+      right_team = #{rightTeam,jdbcType=VARCHAR},
+      right_team_img = #{rightTeamImg,jdbcType=VARCHAR},
+      contest_date = #{contestDate,jdbcType=DATE},
+      contest_time = #{contestTime,jdbcType=TIME},
+      state = #{state,jdbcType=TINYINT},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
