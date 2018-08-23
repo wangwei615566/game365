@@ -28,7 +28,7 @@
     delete from game_classify
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.wz.cashloan.core.model.GameClassify" >
+  <insert id="insert" parameterType="com.wz.cashloan.core.model.GameClassify" useGeneratedKeys="true" keyProperty="id">
     insert into game_classify (id, code, name, 
       remark, update_time, create_time
       )

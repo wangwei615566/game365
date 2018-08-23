@@ -2,6 +2,10 @@ package com.wz.cashloan.core.mapper;
 
 import com.wz.cashloan.core.common.mapper.RDBatisDao;
 import com.wz.cashloan.core.model.GameBet;
+
+import java.util.List;
+import java.util.Map;
+
 @RDBatisDao
 public interface GameBetMapper {
     int deleteByPrimaryKey(Long id);
@@ -15,4 +19,6 @@ public interface GameBetMapper {
     int updateByPrimaryKeySelective(GameBet record);
 
     int updateByPrimaryKey(GameBet record);
+
+    List<GameBet> findSelective(Map<String, Object> map);
 }

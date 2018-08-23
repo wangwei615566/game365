@@ -68,11 +68,11 @@ public class GameBet {
         this.guessOverTime = guessOverTime;
     }
 
-    public Date getUdpateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUdpateTime(Date updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 

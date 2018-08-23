@@ -36,7 +36,7 @@
     delete from game
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.wz.cashloan.core.model.Game" >
+  <insert id="insert" parameterType="com.wz.cashloan.core.model.Game" useGeneratedKeys="true" keyProperty="id">
     insert into game (id, external_game_code, `name`,game_classify_id,
       left_team, left_team_img, right_team, 
       right_team_img, contest_date, contest_time, 

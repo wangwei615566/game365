@@ -14,6 +14,20 @@
   <sql id="Base_Column_List" >
     id, game_id, name, team, odds, guess_over_time, update_time, create_time
   </sql>
+  <sql id="searchBy">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="gameId != null and gameId != ''">
+        game_id  = #{gameId,jdbcType=BIGINT}
+      </if>
+      <if test="name !=null and name != ''">
+        and `name` = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="team !=null and team != ''">
+        and team = #{team,jdbcType=VARCHAR}
+      </if>
+
+    </trim>
+  </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
@@ -125,4 +139,10 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List" />
+    from game_bet
+    <include refid="searchBy"/>
+  </select>
 </mapper>

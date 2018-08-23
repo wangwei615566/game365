@@ -2,17 +2,24 @@ package com.wz.cashloan.core.service.impl;
 
 import com.wz.cashloan.core.mapper.GameClassifyMapper;
 import com.wz.cashloan.core.model.Game;
+import com.wz.cashloan.core.model.GameBet;
 import com.wz.cashloan.core.model.GameClassify;
 import com.wz.cashloan.core.service.CrawlService;
 import com.wz.cashloan.core.mapper.GameBetMapper;
 import com.wz.cashloan.core.mapper.GameMapper;
 import com.wz.cashloan.crawl.Crawling;
+import com.wz.cashloan.crawl.bean.Guess;
+import com.wz.cashloan.crawl.bean.GuessOption;
 import com.wz.cashloan.crawl.bean.Match;
 import com.wz.cashloan.crawl.bean.MatchType;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Author: HBX
@@ -39,6 +46,7 @@ public class CrawlServiceImpl implements CrawlService {
                 GameClassify gameClassify = gameClassifyMapper.selectByName(name);
 
                 if (gameClassify == null) {
+                    gameClassify = new GameClassify();
                     gameClassify.setName(name);
 
                     gameClassifyMapper.insert(gameClassify);
@@ -63,11 +71,49 @@ public class CrawlServiceImpl implements CrawlService {
                         //0未开始，1进行中，2结束
                         byte state = 0;
                         if ("coming".equals(match.getStatus())) {
-
+                            state = 0;
+                        } else if ("carriedOut".equals(match.getStatus())) {
+                            state = 1;
+                        } else {
+                            state = 2;
                         }
                         game.setState(state);
-//                    game.setContestDate();
+                        game.setContestDate(match.getMatchTime());
+                        game.setContestTime(match.getMatchTime());
                         gameMapper.insert(game);
+                    }
+
+                    Long gameId = game.getId();
+
+                    List<Guess> guessList = match.getGuessList();
+                    for (int k = 0; k < guessList.size(); k++) {
+                        Guess guess = guessList.get(k);
+                        String guessName = guess.getName();
+
+
+                        GameBet gameBet = new GameBet();
+                        gameBet.setGameId(gameId);
+                        gameBet.setGuessOverTime(guess.getGuessOverTime());
+                        Date guessOverTime = guess.getGuessOverTime();
+                        List<GuessOption> guessOptionList = guess.getOptions();
+                        for (int l = 0; l < guessOptionList.size(); l++) {
+                            Map<String, Object> queryMap = new HashMap<>();
+                            GuessOption guessOption = guessOptionList.get(l);
+                            queryMap.put("gameId", gameId);
+                            queryMap.put("name", guessName);
+                            queryMap.put("team", guessOption.getName());
+
+                            List<GameBet> gameBetList = gameBetMapper.findSelective(queryMap);
+                            if (gameBetList.size() < 1) {
+                                gameBet.setName(guessName);
+                                gameBet.setOdds(BigDecimal.valueOf(guessOption.getOdds()));
+                                gameBet.setTeam(guessOption.getName());
+                                gameBet.setGuessOverTime(guessOverTime);
+                                gameBet.setGameId(gameId);
+
+                                gameBetMapper.insert(gameBet);
+                            }
+                        }
                     }
                 }
 
