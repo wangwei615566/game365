@@ -16,10 +16,66 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
+  <resultMap id="ModelMap" type="com.wz.cashloan.core.model.GameModel" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="external_game_code" property="externalGameCode" jdbcType="VARCHAR" />
+    <result column="game_classify_id" property="gameClassifyId" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="left_team" property="leftTeam" jdbcType="VARCHAR" />
+    <result column="left_team_img" property="leftTeamImg" jdbcType="VARCHAR" />
+    <result column="right_team" property="rightTeam" jdbcType="VARCHAR" />
+    <result column="right_team_img" property="rightTeamImg" jdbcType="VARCHAR" />
+    <result column="contest_date" property="contestDate" jdbcType="DATE" />
+    <result column="contest_time" property="contestTime" jdbcType="TIME" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
   <sql id="Base_Column_List" >
     id, external_game_code, game_classify_id, `name`,left_team, left_team_img, right_team, right_team_img,
     contest_date, contest_time, state, update_time, create_time
   </sql>
+
+  <sql id="searchBy">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="id != null and id != ''">
+        id  = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="gameClassifyId != null and gameClassifyId != ''">
+        and game_classify_id  = #{gameClassifyId,jdbcType=BIGINT}
+      </if>
+      <if test="name !=null and name != ''">
+        and `name` = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="externalGameCode !=null and externalGameCode != ''">
+        and external_game_code = #{externalGameCode,jdbcType=VARCHAR}
+      </if>
+      <if test="contestDate != null and contestDate != ''">
+        and contest_date = #{contestDate,jdbcType=DATE}
+      </if>
+      <if test="state != null and state != ''">
+        and state = #{state,jdbcType=TINYINT}
+      </if>
+    </trim>
+  </sql>
+
+  <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List" />
+    from game
+    <include refid="searchBy"/>
+    order by contest_date,contest_time
+  </select>
+
+  <select id="listGameModel" resultMap="ModelMap" parameterType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List" />
+    from game
+    <include refid="searchBy"/>
+    order by contest_date,contest_time
+  </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select
     <include refid="Base_Column_List" />

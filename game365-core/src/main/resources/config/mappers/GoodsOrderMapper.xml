@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.wz.cashloan.core.model.GoodsOrder" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="goods_id" property="goodsId" jdbcType="BIGINT" />
     <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
     <result column="num" property="num" jdbcType="INTEGER" />
     <result column="amount" property="amount" jdbcType="DECIMAL" />
@@ -15,7 +16,7 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, order_no, num, amount, coupon_amt, state, shipping_addr, remark, update_time, 
+    id, user_id, goods_id,order_no, num, amount, coupon_amt, state, shipping_addr, remark, update_time,
     create_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -29,11 +30,11 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.wz.cashloan.core.model.GoodsOrder" >
-    insert into goods_order (id, user_id, order_no, 
+    insert into goods_order (id, user_id, goods_id,order_no,
       num, amount, coupon_amt, 
       state, shipping_addr, remark, 
       update_time, create_time)
-    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{orderNo,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT},#{orderNo,jdbcType=VARCHAR},
       #{num,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{couponAmt,jdbcType=DECIMAL}, 
       #{state,jdbcType=TINYINT}, #{shippingAddr,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})

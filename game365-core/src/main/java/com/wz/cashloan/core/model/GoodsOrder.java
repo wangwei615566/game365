@@ -8,6 +8,8 @@ public class GoodsOrder {
 
     private Long userId;
 
+    private Long goodsId;
+
     private String orderNo;
 
     private Integer num;
@@ -112,5 +114,13 @@ public class GoodsOrder {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Long getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(Long goodsId) {
+        this.goodsId = goodsId;
     }
 }
