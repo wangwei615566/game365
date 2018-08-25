@@ -1,13 +1,9 @@
 package com.pos.api.controller;
 
-import com.github.pagehelper.Page;
+import com.pos.api.service.SmsService;
 import com.pos.api.service.UserService;
-import com.wz.cashloan.core.common.context.Constant;
-import com.wz.cashloan.core.common.util.JsonUtil;
-import com.wz.cashloan.core.common.util.RdPage;
 import com.wz.cashloan.core.common.util.ServletUtils;
 import com.wz.cashloan.core.common.web.controller.BaseController;
-import com.wz.cashloan.core.model.Goods;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +23,8 @@ import java.util.Map;
 public class UserController extends BaseController {
     @Resource
     private UserService userService;
+    @Resource
+    private SmsService smsService;
 
     @RequestMapping("/user/register.htm")
     public void list(@RequestParam(value = "loginName") String loginName,
@@ -58,4 +56,31 @@ public class UserController extends BaseController {
         result = userService.resetPassword(loginName, loginPwd);
         ServletUtils.writeToResponse(response, result);
     }
+
+    /**
+     * 获取短息验证码
+     * @param loginName
+     * @param type
+     */
+    @RequestMapping("/user/sendSms.htm")
+    public void sendSms(@RequestParam(value = "loginName") String loginName,
+                        @RequestParam(value = "type") String type)
+
+    {
+        Map<String, Object> result = new HashMap<>();
+        result = smsService.sendSms(loginName, type);
+        ServletUtils.writeToResponse(response, result);
+    }
+
+    @RequestMapping("/user/forgetPwd.htm")
+    public void sendSms(@RequestParam(value = "loginName") String loginName,
+                        @RequestParam(value = "code") String code,
+                        @RequestParam(value = "type") String type)
+
+    {
+        Map<String, Object> result = new HashMap<>();
+        result = smsService.checKCode(loginName, type, code);
+        ServletUtils.writeToResponse(response, result);
+    }
+
 }
