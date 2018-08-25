@@ -18,7 +18,7 @@ import com.wz.cashloan.core.common.util.SqlUtil;
 /**
  * Created by lsk on 2017/2/15.
  */
-@Service
+//@Service
 public class SmsService {
     @Resource
     private DBService dbService;

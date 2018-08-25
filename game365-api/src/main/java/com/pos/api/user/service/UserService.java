@@ -1,32 +1,24 @@
 package com.pos.api.user.service;
 
-import java.util.*;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.pos.api.user.bean.AppSessionBean;
+import com.wz.cashloan.core.common.util.SqlUtil;
+import com.wz.cashloan.core.common.util.StringUtil;
+import com.wz.cashloan.core.mapper.UserMapper;
+import com.wz.cashloan.core.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.pos.api.model.SmsModel;
-import com.pos.api.service.ClSmsService;
-import com.pos.api.user.bean.AppSessionBean;
-import com.wz.cashloan.core.common.context.Global;
-import com.wz.cashloan.core.common.util.MapUtil;
-import com.wz.cashloan.core.common.util.SqlUtil;
-import com.wz.cashloan.core.common.util.StringUtil;
-import com.wz.cashloan.core.model.User;
-import com.wz.cashloan.core.mapper.UserMapper;
-
-import tool.util.BeanUtil;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 /**
  * Created by lsk on 2016/7/27.
  */
-@Service("clUserService_")
+//@Service("clUserService_")
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class UserService {
 
