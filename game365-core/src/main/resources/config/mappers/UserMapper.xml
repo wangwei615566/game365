@@ -24,7 +24,12 @@
     from user
     where id = #{id,jdbcType=BIGINT}
   </select>
-
+  <select id="selectByLoginName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where login_name = #{loginName,jdbcType=VARCHAR}
+  </select>
   <sql id="searchBy">
     <trim prefix="where" prefixOverrides="and|or">
       <if test="id != null and id != ''">
@@ -60,7 +65,7 @@
     delete from user
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.wz.cashloan.core.model.User" >
+  <insert id="insert" parameterType="com.wz.cashloan.core.model.User" useGeneratedKeys="true" keyProperty="id">
     insert into user (id, login_name, login_pwd, 
       loginpwd_modify, invitation_code, level, 
       register_client, register_ip, login_ip, 
