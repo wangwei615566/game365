@@ -36,17 +36,24 @@ public class UserService {
     public Map register(String loginName, String loginPwd, String code) {
         Map result = new HashMap();
         try {
+            User user = userMapper.selectByLoginName(loginName);
+            if (user != null) {
+                result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_PARAM_INSUFFICIENT);
+                result.put(Constant.RESPONSE_CODE_MSG, "用户已存在!");
+                return result;
+            }
+
             if (StringUtil.isAnyBlank(loginName, loginPwd, code) || loginPwd.length() < 6 || loginName.length() != 11) {
                 result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
                 result.put(Constant.RESPONSE_CODE, "参数有误");
                 return result;
             }
-            result = smsService.checKCode(loginName, SmsModel.SMS_TYPE_REGISTER, code);
+            result = smsService.checkCode(loginName, SmsModel.SMS_TYPE_REGISTER, code);
             if (Constant.FAIL_CODE_VALUE == result.get(Constant.RESPONSE_CODE)) {
                 return result;
             }
             loginPwd = MD5.md5(loginPwd);
-            User user = new User();
+            user = new User();
             user.setLoginPwd(loginPwd);
             user.setLoginName(loginName);
 
@@ -80,7 +87,7 @@ public class UserService {
                 result.put(Constant.RESPONSE_CODE_MSG, "用户不存在");
                 return result;
             }
-            if (user.getLoginPwd().equals(MD5.md5(loginPwd))) {
+            if (!user.getLoginPwd().equals(MD5.md5(loginPwd))) {
                 result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_PARAM_INSUFFICIENT);
                 result.put(Constant.RESPONSE_CODE_MSG, "密码错误");
                 return result;
@@ -100,8 +107,18 @@ public class UserService {
 
     public Map resetPassword(String loginName, String newPwd) {
         Map result = new HashMap();
+        if (StringUtil.isAnyBlank(loginName, newPwd) || newPwd.length() < 6 || loginName.length() != 11) {
+            result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+            result.put(Constant.RESPONSE_CODE, "参数有误");
+            return result;
+        }
         try {
             User user = userMapper.selectByLoginName(loginName);
+            if (user == null) {
+                result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_PARAM_INSUFFICIENT);
+                result.put(Constant.RESPONSE_CODE_MSG, "用户不存在!");
+                return result;
+            }
             user.setLoginPwd(MD5.md5(newPwd));
             user.setLoginpwdModify(new Date());
 

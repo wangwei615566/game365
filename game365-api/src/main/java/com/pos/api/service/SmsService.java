@@ -80,9 +80,19 @@ public class SmsService {
                 return result;
             }
         }
-        doSend(loginName, type);
-        result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-        result.put(Constant.RESPONSE_CODE_MSG, "发送成功");
+
+        if (type.equals(SmsModel.SMS_TYPE_FINDREG)) {
+            User user = userMapper.selectByLoginName(loginName);
+            if (user == null) {
+                result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_PARAM_INSUFFICIENT);
+                result.put(Constant.RESPONSE_CODE_MSG, "用户不存在!");
+                return result;
+            }
+        }
+
+        result = doSend(loginName, type);
+//        result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+//        result.put(Constant.RESPONSE_CODE_MSG, "发送成功");
         return result;
     }
 
@@ -94,12 +104,17 @@ public class SmsService {
      * @param code
      * @return
      */
-    public Map checKCode(String loginName, String type, String code) {
+    public Map checkCode(String loginName, String type, String code) {
         Map result = new HashMap();
         Map<String, Object> queryMap = new HashMap<>();
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
         result.put(Constant.RESPONSE_CODE_MSG, "验证失败");
-
+        User user = userMapper.selectByLoginName(loginName);
+        if (user == null) {
+            result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_PARAM_INSUFFICIENT);
+            result.put(Constant.RESPONSE_CODE_MSG, "用户不存在!");
+            return result;
+        }
         if ("dev".equals(Global.getValue("app_environment")) && "0000".equals(code)) {
             result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
             result.put(Constant.RESPONSE_CODE_MSG, "验证成功");
@@ -182,8 +197,9 @@ public class SmsService {
 
                 String modelId = smsTpl.getNumber();
                 String value = URLEncoder.encode("#code#=" + vcode);
-                sms_url = sms_url + "mobile=" + phone + "&tpl_id=" + modelId + "&tpl_value=" + value + "&key=" + sms_key;
+                sms_url = sms_url + "?mobile=" + phone + "&tpl_id=" + modelId + "&tpl_value=" + value + "&key=" + sms_key;
                 resp = HttpUtil.doGet(sms_url);
+                logger.info("手机号：" + phone + "发送短信响应：" + resp);
                 if (StringUtils.isNotBlank(resp) && resp.contains("error_code")) {
                     JSONObject jsonObject = JSON.parseObject(resp);
 

@@ -72,6 +72,12 @@ public class UserController extends BaseController {
         ServletUtils.writeToResponse(response, result);
     }
 
+    /**
+     * 忘记密码
+     * @param loginName
+     * @param code
+     * @param type
+     */
     @RequestMapping("/user/forgetPwd.htm")
     public void sendSms(@RequestParam(value = "loginName") String loginName,
                         @RequestParam(value = "code") String code,
@@ -79,7 +85,7 @@ public class UserController extends BaseController {
 
     {
         Map<String, Object> result = new HashMap<>();
-        result = smsService.checKCode(loginName, type, code);
+        result = smsService.checkCode(loginName, type, code);
         ServletUtils.writeToResponse(response, result);
     }
 
