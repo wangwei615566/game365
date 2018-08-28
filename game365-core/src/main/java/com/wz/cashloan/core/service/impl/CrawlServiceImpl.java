@@ -25,7 +25,7 @@ import java.util.Map;
  * <p>Author: HBX
  * <p>Time: 2018/8/22 22:01
  */
-@Service
+@Service(value = "crawlService")
 public class CrawlServiceImpl implements CrawlService {
     @Resource
     private GameMapper gameMapper;
