@@ -47,4 +47,23 @@
             </list>
         </property>
     </bean>
+
+    <!-- 密码加密 -->
+    <bean id="passwordEncoder"
+          class="com.wz.cashloan.system.security.authentication.encoding.PasswordEncoder">
+        <property name="crypto">
+            <bean
+                    class="com.wz.cashloan.core.common.util.crypto.impl.BlowfishCryptoImpl">
+                <property name="key"
+                          value="${system.password.encoding.key}" />
+            </bean>
+        </property>
+        <property name="saltSource">
+            <bean
+                    class="org.springframework.security.authentication.dao.SystemWideSaltSource">
+                <property name="systemWideSalt"
+                          value="${system.password.encoding.salt}" />
+            </bean>
+        </property>
+    </bean>
 </beans>
