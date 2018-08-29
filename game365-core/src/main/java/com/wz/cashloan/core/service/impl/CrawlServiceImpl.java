@@ -1,6 +1,9 @@
 package com.wz.cashloan.core.service.impl;
 
+import com.wz.cashloan.core.common.util.JsonUtil;
+import com.wz.cashloan.core.mapper.CrawlLogMapper;
 import com.wz.cashloan.core.mapper.GameClassifyMapper;
+import com.wz.cashloan.core.model.CrawlLog;
 import com.wz.cashloan.core.model.Game;
 import com.wz.cashloan.core.model.GameBet;
 import com.wz.cashloan.core.model.GameClassify;
@@ -33,6 +36,8 @@ public class CrawlServiceImpl implements CrawlService {
     private GameBetMapper gameBetMapper;
     @Resource
     private GameClassifyMapper gameClassifyMapper;
+    @Resource
+    private CrawlLogMapper crawlLogMapper;
 
     @Override
     public void saveAndUpdateMatch() {
@@ -119,6 +124,12 @@ public class CrawlServiceImpl implements CrawlService {
 
             }
         }
+
+        CrawlLog crawlLog = new CrawlLog();
+        crawlLog.setCreateTime(new Date());
+        crawlLog.setContext(JsonUtil.toString(matchTypes));
+
+        crawlLogMapper.insert(crawlLog);
 
     }
 }

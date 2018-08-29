@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wz.cashloan.core.mapper.ShoppingCartMapper" >
+  <resultMap id="BaseResultMap" type="com.wz.cashloan.core.model.ShoppingCart" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="game_bet_id" property="gameBetId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, game_bet_id, create_time, remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from shopping_cart
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from shopping_cart
+    where user_id = #{userId,jdbcType=BIGINT}
+    <if test="gameBetId !=null and gameBetId != ''">
+      and game_bet_id = #{gameBetId,jdbcType=BIGINT}
+    </if>
+  </select>
+
+  <select id="listByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from shopping_cart
+    where user_id = #{userId,jdbcType=BIGINT}
+    <if test="gameBetId !=null and gameBetId != ''">
+      and game_bet_id = #{gameBetId,jdbcType=BIGINT}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from shopping_cart
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wz.cashloan.core.model.ShoppingCart" >
+    insert into shopping_cart (id, user_id, game_bet_id, 
+      create_time, remark)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{gameBetId,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wz.cashloan.core.model.ShoppingCart" >
+    insert into shopping_cart
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="gameBetId != null" >
+        game_bet_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="gameBetId != null" >
+        #{gameBetId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wz.cashloan.core.model.ShoppingCart" >
+    update shopping_cart
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="gameBetId != null" >
+        game_bet_id = #{gameBetId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wz.cashloan.core.model.ShoppingCart" >
+    update shopping_cart
+    set user_id = #{userId,jdbcType=BIGINT},
+      game_bet_id = #{gameBetId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
