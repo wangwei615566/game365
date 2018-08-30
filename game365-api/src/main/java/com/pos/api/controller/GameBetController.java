@@ -5,6 +5,7 @@ import com.wz.cashloan.core.common.context.Constant;
 import com.wz.cashloan.core.common.util.RdPage;
 import com.wz.cashloan.core.common.util.ServletUtils;
 import com.wz.cashloan.core.common.web.controller.BaseController;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -53,4 +54,18 @@ public class GameBetController extends BaseController {
         result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
         ServletUtils.writeToResponse(response, result);
     }
+
+
+    @RequestMapping("/gameBet/saveBetOrder.htm")
+    public void saveBetOrder(@RequestParam(value = "userId") Long userId,
+                             @RequestParam(value = "totalScore") Double totalScore,
+                             @RequestParam(value = "type") int type,
+                             @RequestParam(value = "gameBets") String gameBets
+    )
+
+    {
+
+        ServletUtils.writeToResponse(response, gameBetService.saveBetOrder(userId,gameBets,totalScore,type));
+    }
+
 }

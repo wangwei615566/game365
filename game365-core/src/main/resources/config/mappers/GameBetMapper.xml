@@ -149,4 +149,26 @@
   <select id="findShoppingCartGameBet" resultMap="BaseResultMap" parameterType="java.lang.Long">
   SELECT gb.* FROM game_bet gb LEFT JOIN `shopping_cart` sc on sc.game_bet_id = gb.id where sc.user_id = #{id,jdbcType=BIGINT} and gb.guess_over_time > now();
   </select>
+
+  <select id="groupCountGameId" resultType="java.lang.Integer" parameterType="java.lang.String">
+    SELECT
+        count(1)
+    FROM
+	(
+		SELECT
+			count(*)
+		FROM
+			`game_bet`
+		WHERE
+			id IN IN
+            <foreach collection="ids" item="id" index="index"
+                     open="(" close=")" separator=",">
+              #{id}
+            </foreach>
+		GROUP BY
+			game_id
+		HAVING
+			count(*) > 1
+	) t1
+  </select>
 </mapper>
