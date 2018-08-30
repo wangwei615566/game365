@@ -29,7 +29,7 @@
     </trim>
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from game_bet
     where id = #{id,jdbcType=BIGINT}
@@ -146,5 +146,7 @@
     <include refid="searchBy"/>
   </select>
 
-
+  <select id="findShoppingCartGameBet" resultMap="BaseResultMap" parameterType="java.lang.Long">
+  SELECT gb.* FROM game_bet gb LEFT JOIN `shopping_cart` sc on sc.game_bet_id = gb.id where sc.user_id = #{id,jdbcType=BIGINT} and gb.guess_over_time > now();
+  </select>
 </mapper>

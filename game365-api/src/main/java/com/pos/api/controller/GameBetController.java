@@ -1,6 +1,8 @@
 package com.pos.api.controller;
 
 import com.pos.api.service.GameBetService;
+import com.wz.cashloan.core.common.context.Constant;
+import com.wz.cashloan.core.common.util.RdPage;
 import com.wz.cashloan.core.common.util.ServletUtils;
 import com.wz.cashloan.core.common.web.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>Author: HBX
@@ -42,6 +47,10 @@ public class GameBetController extends BaseController {
     public void listDetail(@RequestParam(value = "userId") Long userId)
 
     {
-        ServletUtils.writeToResponse(response, gameBetService.listDetail(userId));
+        Map result = new HashMap();
+        result.put(Constant.RESPONSE_DATA, gameBetService.listDetail(userId));
+        result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+        result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+        ServletUtils.writeToResponse(response, result);
     }
 }

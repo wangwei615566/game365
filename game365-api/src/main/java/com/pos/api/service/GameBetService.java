@@ -1,13 +1,16 @@
 package com.pos.api.service;
 
 import com.wz.cashloan.core.common.context.Constant;
+import com.wz.cashloan.core.mapper.GameBetMapper;
 import com.wz.cashloan.core.mapper.ShoppingCartMapper;
+import com.wz.cashloan.core.model.GameBet;
 import com.wz.cashloan.core.model.ShoppingCart;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,12 +21,21 @@ import java.util.Map;
 public class GameBetService {
     @Resource
     private ShoppingCartMapper shoppingCartMapper;
+    @Resource
+    private GameBetMapper gameBetMapper;
 
     public Map add(Long userId, Long gameBetId) {
         Map<String, Object> result = new HashMap<>();
+
+        GameBet gameBet = gameBetMapper.selectByPrimaryKey(gameBetId);
+        if (gameBet == null) {
+            result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_PARAM_INSUFFICIENT);
+            result.put(Constant.RESPONSE_CODE_MSG, "无效gameBetId");
+
+            return result;
+        }
         result.put("userId", userId);
         result.put("gameBetId", gameBetId);
-
         ShoppingCart shoppingCart = shoppingCartMapper.selectByMap(result);
         result.clear();
         if (shoppingCart != null) {
@@ -63,8 +75,9 @@ public class GameBetService {
         return result;
     }
 
-    public Map listDetail(Long userId){
-        return null;
+    public List<GameBet> listDetail(Long userId) {
+
+        return gameBetMapper.findShoppingCartGameBet(userId);
     }
 
 }

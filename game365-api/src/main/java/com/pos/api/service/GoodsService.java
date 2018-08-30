@@ -49,6 +49,10 @@ public class GoodsService {
      * @return
      */
     public int saveGoodsOrder(Long userId, Long goodsId, int num, double amount) {
+        Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
+        if (goods == null) {
+            return -1;
+        }
         GoodsOrder goodsOrder = new GoodsOrder();
         goodsOrder.setAmount(BigDecimal.valueOf(amount));
         goodsOrder.setNum(num);

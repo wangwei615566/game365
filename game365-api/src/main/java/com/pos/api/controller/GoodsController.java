@@ -61,8 +61,11 @@ public class GoodsController extends BaseController {
             result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
 
         } else {
-            result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
             result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+            if (a == -1) {
+                result.put(Constant.RESPONSE_CODE_MSG, "商品不存在");
+            }
+            result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
         }
         ServletUtils.writeToResponse(response, result);
     }

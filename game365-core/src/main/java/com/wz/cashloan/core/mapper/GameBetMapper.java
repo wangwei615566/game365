@@ -21,4 +21,6 @@ public interface GameBetMapper {
     int updateByPrimaryKey(GameBet record);
 
     List<GameBet> findSelective(Map<String, Object> map);
+
+    List<GameBet> findShoppingCartGameBet(Long id);
 }
