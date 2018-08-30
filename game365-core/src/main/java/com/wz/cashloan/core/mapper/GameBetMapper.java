@@ -23,4 +23,6 @@ public interface GameBetMapper {
     List<GameBet> findSelective(Map<String, Object> map);
 
     List<GameBet> findShoppingCartGameBet(Long id);
+
+    int groupCountGameId(Map<String, Object> map);
 }

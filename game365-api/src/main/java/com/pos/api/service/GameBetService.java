@@ -5,14 +5,17 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.wz.cashloan.core.common.context.Constant;
 import com.wz.cashloan.core.mapper.GameBetMapper;
+import com.wz.cashloan.core.mapper.GameOrderMapper;
 import com.wz.cashloan.core.mapper.ShoppingCartMapper;
 import com.wz.cashloan.core.mapper.UserAmountMapper;
 import com.wz.cashloan.core.model.GameBet;
+import com.wz.cashloan.core.model.GameOrder;
 import com.wz.cashloan.core.model.ShoppingCart;
 import com.wz.cashloan.core.model.UserAmount;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import tool.util.BigDecimalUtil;
+import tool.util.OrderNoUtil;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -34,6 +37,8 @@ public class GameBetService {
     private GameBetMapper gameBetMapper;
     @Resource
     private UserAmountMapper userAmountMapper;
+    @Resource
+    private GameOrderMapper gameOrderMapper;
 
     public Map add(Long userId, Long gameBetId) {
         Map<String, Object> result = new HashMap<>();
@@ -94,13 +99,15 @@ public class GameBetService {
 
     public Map saveBetOrder(Long userId, String gameBets, Double totalScore, int type) {
         Map result = new HashMap();
+        String orderNo = OrderNoUtil.getSerialNumber();
         UserAmount userAmount = userAmountMapper.findByUserId(userId);
         if (userAmount == null) {
             result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
             result.put(Constant.RESPONSE_CODE_MSG, "用户不存在");
             return result;
         }
-        if (new BigDecimal(totalScore).compareTo(userAmount.getTotal()) > 0) {
+        BigDecimal bigDecimal = new BigDecimal(totalScore);
+        if (bigDecimal.compareTo(userAmount.getTotal()) > 0) {
             result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
             result.put(Constant.RESPONSE_CODE_MSG, "积分不足");
             return result;
@@ -118,18 +125,43 @@ public class GameBetService {
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
                 Long gameBetId = object.getLong("gameBetId");
+                ids.add(gameBetId);
+            }
+            result.clear();
+            result.put("ids", ids);
+            int a = gameBetMapper.groupCountGameId(result);
+            result.clear();
+            if (a > 0 && type == 2) {
+                result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+                result.put(Constant.RESPONSE_CODE_MSG, "通关模式单个一个赛事只允许投注一个竞猜项");
+                return result;
+            }
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject object = jsonArray.getJSONObject(i);
+                Long gameBetId = object.getLong("gameBetId");
                 BigDecimal score = object.getBigDecimal("score");
 
-                ids.add(gameBetId);
+                GameOrder gameOrder = new GameOrder();
+                gameOrder.setGameBetId(gameBetId);
+                gameOrder.setOrderNo(orderNo);
+                gameOrder.setScore(score);
+                gameOrder.setType((byte) type);
+                gameOrder.setUserId(userId);
+                gameOrder.setState("10");
 
+                gameOrderMapper.insert(gameOrder);
             }
+            userAmount.setTotal(userAmount.getTotal().subtract(bigDecimal));
+            userAmountMapper.updateByPrimaryKey(userAmount);
 
         } catch (Exception e) {
-
+            e.printStackTrace();
+            result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+            result.put(Constant.RESPONSE_CODE_MSG, "系统异常");
+            return result;
         }
-//        result.put(Constant.RESPONSE_DATA, gameBetService.listDetail(userId));
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-        result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+        result.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
         return result;
     }
 }

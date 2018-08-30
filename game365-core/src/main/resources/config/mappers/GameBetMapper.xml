@@ -150,7 +150,7 @@
   SELECT gb.* FROM game_bet gb LEFT JOIN `shopping_cart` sc on sc.game_bet_id = gb.id where sc.user_id = #{id,jdbcType=BIGINT} and gb.guess_over_time > now();
   </select>
 
-  <select id="groupCountGameId" resultType="java.lang.Integer" parameterType="java.lang.String">
+  <select id="groupCountGameId" resultType="java.lang.Integer" parameterType="java.util.Map">
     SELECT
         count(1)
     FROM
@@ -160,7 +160,7 @@
 		FROM
 			`game_bet`
 		WHERE
-			id IN IN
+			id IN
             <foreach collection="ids" item="id" index="index"
                      open="(" close=")" separator=",">
               #{id}
