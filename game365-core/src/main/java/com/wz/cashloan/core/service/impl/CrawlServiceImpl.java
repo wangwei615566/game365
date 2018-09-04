@@ -64,6 +64,14 @@ public class CrawlServiceImpl implements CrawlService {
                 for (int j = 0; j < matchList.size(); j++) {
                     Match match = matchList.get(j);
                     Game game = gameMapper.selectByGameCode(match.getMatchCode());
+                    byte state = 0;
+                    if ("coming".equals(match.getStatus())) {
+                        state = 0;
+                    } else if ("carriedOut".equals(match.getStatus())) {
+                        state = 1;
+                    } else {
+                        state = 2;
+                    }
                     if (game == null) {
                         game = new Game();
                         game.setExternalGameCode(match.getMatchCode());
@@ -74,18 +82,19 @@ public class CrawlServiceImpl implements CrawlService {
                         game.setRightTeam(match.getSurveyRightTeamName());
                         game.setRightTeamImg(match.getSurveyRightTeamLogo());
                         //0未开始，1进行中，2结束
-                        byte state = 0;
-                        if ("coming".equals(match.getStatus())) {
-                            state = 0;
-                        } else if ("carriedOut".equals(match.getStatus())) {
-                            state = 1;
-                        } else {
-                            state = 2;
-                        }
+
                         game.setState(state);
                         game.setContestDate(match.getMatchTime());
                         game.setContestTime(match.getMatchTime());
                         gameMapper.insert(game);
+                    } else {
+                        if ("待定".equals(game.getRightTeam())) {
+                            game.setRightTeam(match.getSurveyRightTeamName());
+                            game.setRightTeamImg(match.getSurveyRightTeamLogo());
+                        }
+                        game.setState(state);
+
+                        gameMapper.updateByPrimaryKeySelective(game);
                     }
 
                     Long gameId = game.getId();
