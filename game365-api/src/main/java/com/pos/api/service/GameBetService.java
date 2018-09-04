@@ -154,6 +154,12 @@ public class GameBetService {
             userAmount.setTotal(userAmount.getTotal().subtract(bigDecimal));
             userAmountMapper.updateByPrimaryKey(userAmount);
 
+            //下单成功删除购物车内容
+            result.put("ids", ids);
+            result.put("userId", userId);
+
+            shoppingCartMapper.deleteByGameBetIds(result);
+            result.clear();
         } catch (Exception e) {
             e.printStackTrace();
             result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);

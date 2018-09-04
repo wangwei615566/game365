@@ -92,6 +92,10 @@ public class CrawlServiceImpl implements CrawlService {
                             game.setRightTeam(match.getSurveyRightTeamName());
                             game.setRightTeamImg(match.getSurveyRightTeamLogo());
                         }
+                        if ("待定".equals(game.getLeftTeam())) {
+                            game.setLeftTeam(match.getSurveyLeftTeamName());
+                            game.setLeftTeamImg(match.getSurveyLeftTeamLogo());
+                        }
                         game.setState(state);
 
                         gameMapper.updateByPrimaryKeySelective(game);

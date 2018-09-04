@@ -23,4 +23,6 @@ public interface ShoppingCartMapper {
     ShoppingCart selectByMap(Map<String, Object> map);
 
     List<ShoppingCart> listByMap(Map<String, Object> map);
+
+    int deleteByGameBetIds(Map<String, Object> map);
 }
