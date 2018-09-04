@@ -23,8 +23,10 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="left_team" property="leftTeam" jdbcType="VARCHAR" />
     <result column="left_team_img" property="leftTeamImg" jdbcType="VARCHAR" />
+    <result column="left_score" property="leftScore" jdbcType="INTEGER" />
     <result column="right_team" property="rightTeam" jdbcType="VARCHAR" />
     <result column="right_team_img" property="rightTeamImg" jdbcType="VARCHAR" />
+    <result column="right_score" property="rightScore" jdbcType="INTEGER" />
     <result column="contest_date" property="contestDate" jdbcType="DATE" />
     <result column="contest_time" property="contestTime" jdbcType="TIME" />
     <result column="state" property="state" jdbcType="TINYINT" />
@@ -33,7 +35,7 @@
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, external_game_code, game_classify_id, `name`,left_team, left_team_img, right_team, right_team_img,
+    id, external_game_code, game_classify_id, `name`,left_team, left_team_img, right_team, right_team_img,left_score,right_score
     contest_date, contest_time, state, update_time, create_time
   </sql>
 
@@ -96,12 +98,12 @@
     insert into game (id, external_game_code, `name`,game_classify_id,
       left_team, left_team_img, right_team, 
       right_team_img, contest_date, contest_time, 
-      state, update_time, create_time
+      state, update_time, create_time,left_score,right_score
       )
     values (#{id,jdbcType=BIGINT}, #{externalGameCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},#{gameClassifyId,jdbcType=BIGINT},
       #{leftTeam,jdbcType=VARCHAR}, #{leftTeamImg,jdbcType=VARCHAR}, #{rightTeam,jdbcType=VARCHAR}, 
       #{rightTeamImg,jdbcType=VARCHAR}, #{contestDate,jdbcType=DATE}, #{contestTime,jdbcType=TIME}, 
-      #{state,jdbcType=TINYINT}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
+      #{state,jdbcType=TINYINT}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP},#{rightScore,jdbcType=INTEGER},#{leftScore,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.wz.cashloan.core.model.Game" >
@@ -219,6 +221,12 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="leftScore != null" >
+        left_score = #{leftScore,jdbcType=BIGINT},
+      </if>
+      <if test="rightScore != null" >
+        right_score = #{rightScore,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -234,6 +242,8 @@
       contest_time = #{contestTime,jdbcType=TIME},
       state = #{state,jdbcType=TINYINT},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
+      left_score = #{leftScore,jdbcType=BIGINT},
+      right_score = #{rightScore,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>

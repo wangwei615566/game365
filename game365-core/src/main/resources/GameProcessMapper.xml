@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wz.cashloan.core.mapper.GameProcessMapper" >
+  <resultMap id="BaseResultMap" type="com.wz.cashloan.core.model.GameProcess" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="game_id" property="gameId" jdbcType="BIGINT" />
+    <result column="right_score" property="rightScore" jdbcType="INTEGER" />
+    <result column="left_score" property="leftScore" jdbcType="INTEGER" />
+    <result column="round" property="round" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, game_id, right_score, left_score, round, create_time, remark
+  </sql>
+  <sql id="searchBy">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="gameId != null" >
+        game_id = #{gameId,jdbcType=VARCHAR}
+      </if>
+      <if test="round != null" >
+        and round = #{round,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <select id="findByMap" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from game_process
+    <include refid="searchBy"/>
+  </select>
+  <select id="ListByMap" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from game_process
+    <include refid="searchBy"/>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from game_process
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from game_process
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.wz.cashloan.core.model.GameProcess" >
+    insert into game_process (id, game_id, right_score, 
+      left_score, round, create_time, 
+      remark)
+    values (#{id,jdbcType=BIGINT}, #{gameId,jdbcType=BIGINT}, #{rightScore,jdbcType=INTEGER}, 
+      #{leftScore,jdbcType=INTEGER}, #{round,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wz.cashloan.core.model.GameProcess" >
+    insert into game_process
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="gameId != null" >
+        game_id,
+      </if>
+      <if test="rightScore != null" >
+        right_score,
+      </if>
+      <if test="leftScore != null" >
+        left_score,
+      </if>
+      <if test="round != null" >
+        round,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="gameId != null" >
+        #{gameId,jdbcType=BIGINT},
+      </if>
+      <if test="rightScore != null" >
+        #{rightScore,jdbcType=INTEGER},
+      </if>
+      <if test="leftScore != null" >
+        #{leftScore,jdbcType=INTEGER},
+      </if>
+      <if test="round != null" >
+        #{round,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wz.cashloan.core.model.GameProcess" >
+    update game_process
+    <set >
+      <if test="gameId != null" >
+        game_id = #{gameId,jdbcType=BIGINT},
+      </if>
+      <if test="rightScore != null" >
+        right_score = #{rightScore,jdbcType=INTEGER},
+      </if>
+      <if test="leftScore != null" >
+        left_score = #{leftScore,jdbcType=INTEGER},
+      </if>
+      <if test="round != null" >
+        round = #{round,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wz.cashloan.core.model.GameProcess" >
+    update game_process
+    set game_id = #{gameId,jdbcType=BIGINT},
+      right_score = #{rightScore,jdbcType=INTEGER},
+      left_score = #{leftScore,jdbcType=INTEGER},
+      round = #{round,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

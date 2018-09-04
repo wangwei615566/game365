@@ -3,10 +3,12 @@ package com.wz.cashloan.core.service.impl;
 import com.wz.cashloan.core.common.util.JsonUtil;
 import com.wz.cashloan.core.mapper.CrawlLogMapper;
 import com.wz.cashloan.core.mapper.GameClassifyMapper;
+import com.wz.cashloan.core.mapper.GameProcessMapper;
 import com.wz.cashloan.core.model.CrawlLog;
 import com.wz.cashloan.core.model.Game;
 import com.wz.cashloan.core.model.GameBet;
 import com.wz.cashloan.core.model.GameClassify;
+import com.wz.cashloan.core.model.GameProcess;
 import com.wz.cashloan.core.service.CrawlService;
 import com.wz.cashloan.core.mapper.GameBetMapper;
 import com.wz.cashloan.core.mapper.GameMapper;
@@ -38,11 +40,13 @@ public class CrawlServiceImpl implements CrawlService {
     private GameClassifyMapper gameClassifyMapper;
     @Resource
     private CrawlLogMapper crawlLogMapper;
+    @Resource
+    private GameProcessMapper gameProcessMapper;
 
     @Override
     public void saveAndUpdateMatch() {
         List<MatchType> matchTypes = Crawling.crawlAll();
-
+        Map<String, Object> queryMap = new HashMap<>();
         if (matchTypes != null && matchTypes.size() > 0) {
 
             for (int i = 0; i < matchTypes.size(); i++) {
@@ -96,12 +100,39 @@ public class CrawlServiceImpl implements CrawlService {
                             game.setLeftTeam(match.getSurveyLeftTeamName());
                             game.setLeftTeamImg(match.getSurveyLeftTeamLogo());
                         }
+                        if (state != 0) {
+                            game.setLeftScore(match.getSurveyLeftScore());
+                            game.setRightScore(match.getSurveyRightScore());
+                        }
                         game.setState(state);
 
                         gameMapper.updateByPrimaryKeySelective(game);
                     }
 
                     Long gameId = game.getId();
+
+                    //保存赛事进度
+                    List<Integer> lefts = match.getSurveyLeftScoreList();
+                    List<Integer> rights = match.getSurveyRightScoreList();
+                    if (state != 0) {
+                        for (int k = 0; k < lefts.size(); k++) {
+                            String round = String.valueOf(k + 1);
+                            queryMap.put("gameId", gameId);
+                            queryMap.put("round", round);
+                            GameProcess gameProcess = gameProcessMapper.findByMap(queryMap);
+                            if (gameProcess == null) {
+                                gameProcess = new GameProcess();
+                                gameProcess.setGameId(gameId);
+                                gameProcess.setLeftScore(lefts.get(k));
+                                gameProcess.setRightScore(rights.get(k));
+                                gameProcess.setRound(round);
+
+                                gameProcessMapper.insert(gameProcess);
+                            }
+
+                        }
+                    }
+
 
                     List<Guess> guessList = match.getGuessList();
                     for (int k = 0; k < guessList.size(); k++) {
@@ -115,7 +146,7 @@ public class CrawlServiceImpl implements CrawlService {
                         Date guessOverTime = guess.getGuessOverTime();
                         List<GuessOption> guessOptionList = guess.getOptions();
                         for (int l = 0; l < guessOptionList.size(); l++) {
-                            Map<String, Object> queryMap = new HashMap<>();
+
                             GuessOption guessOption = guessOptionList.get(l);
                             queryMap.put("gameId", gameId);
                             queryMap.put("name", guessName);

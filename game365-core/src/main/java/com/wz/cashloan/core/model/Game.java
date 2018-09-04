@@ -29,6 +29,10 @@ public class Game {
 
     private Date createTime;
 
+    private Integer leftScore;
+
+    private Integer rightScore;
+
     public Long getId() {
         return id;
     }
@@ -131,5 +135,21 @@ public class Game {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getLeftScore() {
+        return leftScore;
+    }
+
+    public void setLeftScore(Integer leftScore) {
+        this.leftScore = leftScore;
+    }
+
+    public Integer getRightScore() {
+        return rightScore;
+    }
+
+    public void setRightScore(Integer rightScore) {
+        this.rightScore = rightScore;
     }
 }
