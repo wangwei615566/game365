@@ -37,7 +37,7 @@
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, external_game_code, game_classify_id, `name`,left_team, left_team_img, right_team, right_team_img,left_score,right_score
+    id, external_game_code, game_classify_id, `name`,left_team, left_team_img, left_score,right_team, right_team_img,right_score
     contest_date, contest_time, state, update_time, create_time
   </sql>
 

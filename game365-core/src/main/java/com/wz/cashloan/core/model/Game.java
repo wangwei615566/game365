@@ -15,9 +15,13 @@ public class Game {
 
     private String leftTeamImg;
 
+    private Integer leftScore;
+
     private String rightTeam;
 
     private String rightTeamImg;
+
+    private Integer rightScore;
 
     private Date contestDate;
 
@@ -29,9 +33,6 @@ public class Game {
 
     private Date createTime;
 
-    private Integer leftScore;
-
-    private Integer rightScore;
 
     public Long getId() {
         return id;

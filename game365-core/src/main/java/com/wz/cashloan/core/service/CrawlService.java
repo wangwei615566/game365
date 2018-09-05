@@ -10,8 +10,13 @@ import java.util.List;
  */
 public interface CrawlService {
     /**
-     * 更新比赛数据
+     *
      * @param matchList
      */
     void saveAndUpdateMatch();
+
+    /**
+     * 更新比赛数据
+     */
+    void updateMatch();
 }

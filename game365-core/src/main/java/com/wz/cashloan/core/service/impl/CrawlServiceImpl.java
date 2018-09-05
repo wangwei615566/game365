@@ -183,4 +183,67 @@ public class CrawlServiceImpl implements CrawlService {
         }
 
     }
+
+    @Override
+    public void updateMatch() {
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("state", "1");
+        //查询数据库中正在进行的比赛
+        List<Game> gameList = gameMapper.listSelective(queryMap);
+        for (int i = 0; i < gameList.size(); i++) {
+            Game game = gameList.get(i);
+            Match match = Crawling.crawlMatchByCode(game.getExternalGameCode());
+            byte state = 0;
+
+            if ("coming".equals(match.getStatus())) {
+                state = 0;
+            } else if ("carriedOut".equals(match.getStatus())) {
+                state = 1;
+            } else {
+                state = 2;
+            }
+
+            if ("待定".equals(game.getRightTeam())) {
+                game.setRightTeam(match.getSurveyRightTeamName());
+                game.setRightTeamImg(match.getSurveyRightTeamLogo());
+            }
+            if ("待定".equals(game.getLeftTeam())) {
+                game.setLeftTeam(match.getSurveyLeftTeamName());
+                game.setLeftTeamImg(match.getSurveyLeftTeamLogo());
+            }
+            if (state != 0) {
+                game.setLeftScore(match.getSurveyLeftScore());
+                game.setRightScore(match.getSurveyRightScore());
+            }
+            game.setState(state);
+
+            gameMapper.updateByPrimaryKeySelective(game);
+
+
+            Long gameId = game.getId();
+
+            //保存赛事进度
+            List<Integer> lefts = match.getSurveyLeftScoreList();
+            List<Integer> rights = match.getSurveyRightScoreList();
+
+            for (int k = 0; k < lefts.size(); k++) {
+                String round = String.valueOf(k + 1);
+                queryMap.put("gameId", gameId);
+                queryMap.put("round", round);
+                GameProcess gameProcess = gameProcessMapper.findByMap(queryMap);
+                if (gameProcess == null) {
+                    gameProcess = new GameProcess();
+                    gameProcess.setGameId(gameId);
+                    gameProcess.setLeftScore(lefts.get(k));
+                    gameProcess.setRightScore(rights.get(k));
+                    gameProcess.setRound(round);
+
+                    gameProcessMapper.insert(gameProcess);
+                }
+
+            }
+
+
+        }
+    }
 }
