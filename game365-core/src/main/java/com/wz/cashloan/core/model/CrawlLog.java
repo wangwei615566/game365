@@ -5,6 +5,8 @@ import java.util.Date;
 public class CrawlLog {
     private Long id;
 
+    private String exceptionMsg;
+
     private Date createTime;
 
     private String remark;
@@ -17,6 +19,14 @@ public class CrawlLog {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getExceptionMsg() {
+        return exceptionMsg;
+    }
+
+    public void setExceptionMsg(String exceptionMsg) {
+        this.exceptionMsg = exceptionMsg == null ? null : exceptionMsg.trim();
     }
 
     public Date getCreateTime() {

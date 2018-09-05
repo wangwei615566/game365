@@ -8,8 +8,10 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="left_team" property="leftTeam" jdbcType="VARCHAR" />
     <result column="left_team_img" property="leftTeamImg" jdbcType="VARCHAR" />
+    <result column="left_score" property="leftScore" jdbcType="INTEGER" />
     <result column="right_team" property="rightTeam" jdbcType="VARCHAR" />
     <result column="right_team_img" property="rightTeamImg" jdbcType="VARCHAR" />
+    <result column="right_score" property="rightScore" jdbcType="INTEGER" />
     <result column="contest_date" property="contestDate" jdbcType="DATE" />
     <result column="contest_time" property="contestTime" jdbcType="TIME" />
     <result column="state" property="state" jdbcType="TINYINT" />
@@ -23,10 +25,10 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="left_team" property="leftTeam" jdbcType="VARCHAR" />
     <result column="left_team_img" property="leftTeamImg" jdbcType="VARCHAR" />
-    <result column="left_score" property="leftScore" jdbcType="INTEGER" />
+
     <result column="right_team" property="rightTeam" jdbcType="VARCHAR" />
     <result column="right_team_img" property="rightTeamImg" jdbcType="VARCHAR" />
-    <result column="right_score" property="rightScore" jdbcType="INTEGER" />
+
     <result column="contest_date" property="contestDate" jdbcType="DATE" />
     <result column="contest_time" property="contestTime" jdbcType="TIME" />
     <result column="state" property="state" jdbcType="TINYINT" />

@@ -7,13 +7,15 @@
     <result column="game_bet_id" property="gameBetId" jdbcType="BIGINT" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
     <result column="score" property="score" jdbcType="DECIMAL" />
+    <result column="clearing_score" property="clearingScore" jdbcType="DECIMAL" />
+    <result column="result" property="result" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="TINYINT" />
     <result column="state" property="state" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, order_no, game_bet_id, user_id, score, type, state, create_time, update_time
+    id, order_no, game_bet_id, user_id, score, type, state, create_time, update_time,clearing_score,result
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -28,11 +30,11 @@
   <insert id="insert" parameterType="com.wz.cashloan.core.model.GameOrder" >
     insert into game_order (id, order_no, game_bet_id, 
       user_id, score, type, 
-      state, create_time, update_time
+      state, create_time, update_time,clearing_score,result
       )
     values (#{id,jdbcType=BIGINT}, #{orderNo,jdbcType=VARCHAR}, #{gameBetId,jdbcType=BIGINT}, 
       #{userId,jdbcType=BIGINT}, #{score,jdbcType=DECIMAL}, #{type,jdbcType=TINYINT}, 
-      #{state,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      #{state,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},#{clearingScore,jdbcType=DECIMAL},#{result,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.wz.cashloan.core.model.GameOrder" >
@@ -110,6 +112,12 @@
       </if>
       <if test="score != null" >
         score = #{score,jdbcType=DECIMAL},
+      </if>
+      <if test="clearingScore != null" >
+        clearing_score = #{clearingScore,jdbcType=DECIMAL},
+      </if>
+      <if test="result != null" >
+        result = #{result,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=TINYINT},

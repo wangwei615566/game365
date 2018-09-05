@@ -3,6 +3,7 @@
 <mapper namespace="com.wz.cashloan.core.mapper.CrawlLogMapper" >
   <resultMap id="BaseResultMap" type="com.wz.cashloan.core.model.CrawlLog" >
     <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="exception_msg" property="exceptionMsg" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
@@ -10,7 +11,7 @@
     <result column="context" property="context" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, create_time, remark
+    id, exception_msg, create_time, remark
   </sql>
   <sql id="Blob_Column_List" >
     context
@@ -28,16 +29,19 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.wz.cashloan.core.model.CrawlLog" >
-    insert into crawl_log (id, create_time, remark, 
-      context)
-    values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, 
-      #{context,jdbcType=LONGVARCHAR})
+    insert into crawl_log (id, exception_msg, create_time, 
+      remark, context)
+    values (#{id,jdbcType=BIGINT}, #{exceptionMsg,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR}, #{context,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wz.cashloan.core.model.CrawlLog" >
     insert into crawl_log
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="exceptionMsg != null" >
+        exception_msg,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -53,6 +57,9 @@
       <if test="id != null" >
         #{id,jdbcType=BIGINT},
       </if>
+      <if test="exceptionMsg != null" >
+        #{exceptionMsg,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -67,6 +74,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.wz.cashloan.core.model.CrawlLog" >
     update crawl_log
     <set >
+      <if test="exceptionMsg != null" >
+        exception_msg = #{exceptionMsg,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -81,14 +91,16 @@
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wz.cashloan.core.model.CrawlLog" >
     update crawl_log
-    set create_time = #{createTime,jdbcType=TIMESTAMP},
+    set exception_msg = #{exceptionMsg,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
       remark = #{remark,jdbcType=VARCHAR},
       context = #{context,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wz.cashloan.core.model.CrawlLog" >
     update crawl_log
-    set create_time = #{createTime,jdbcType=TIMESTAMP},
+    set exception_msg = #{exceptionMsg,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
       remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
