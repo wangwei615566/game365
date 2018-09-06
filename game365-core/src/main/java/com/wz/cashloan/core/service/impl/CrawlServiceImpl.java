@@ -113,27 +113,27 @@ public class CrawlServiceImpl implements CrawlService {
 
                         Long gameId = game.getId();
 
-                        //保存赛事进度
-                        List<Integer> lefts = match.getSurveyLeftScoreList();
-                        List<Integer> rights = match.getSurveyRightScoreList();
-                        if (state != 0) {
-                            for (int k = 0; k < lefts.size(); k++) {
-                                String round = String.valueOf(k + 1);
-                                queryMap.put("gameId", gameId);
-                                queryMap.put("round", round);
-                                GameProcess gameProcess = gameProcessMapper.findByMap(queryMap);
-                                if (gameProcess == null) {
-                                    gameProcess = new GameProcess();
-                                    gameProcess.setGameId(gameId);
-                                    gameProcess.setLeftScore(lefts.get(k));
-                                    gameProcess.setRightScore(rights.get(k));
-                                    gameProcess.setRound(round);
-
-                                    gameProcessMapper.insert(gameProcess);
-                                }
-
-                            }
-                        }
+//                        //保存赛事进度
+//                        List<Integer> lefts = match.getSurveyLeftScoreList();
+//                        List<Integer> rights = match.getSurveyRightScoreList();
+//                        if (state != 0) {
+//                            for (int k = 0; k < lefts.size(); k++) {
+//                                String round = String.valueOf(k + 1);
+//                                queryMap.put("gameId", gameId);
+//                                queryMap.put("round", round);
+//                                GameProcess gameProcess = gameProcessMapper.findByMap(queryMap);
+//                                if (gameProcess == null) {
+//                                    gameProcess = new GameProcess();
+//                                    gameProcess.setGameId(gameId);
+//                                    gameProcess.setLeftScore(lefts.get(k));
+//                                    gameProcess.setRightScore(rights.get(k));
+//                                    gameProcess.setRound(round);
+//
+//                                    gameProcessMapper.insert(gameProcess);
+//                                }
+//
+//                            }
+//                        }
 
 
                         List<Guess> guessList = match.getGuessList();
