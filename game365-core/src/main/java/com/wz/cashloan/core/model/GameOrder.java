@@ -22,6 +22,12 @@ public class GameOrder {
 
     private Date updateTime;
 
+    private BigDecimal clearingScore;
+
+    private Integer result;
+
+    private String overState;
+
     public Long getId() {
         return id;
     }
@@ -92,5 +98,29 @@ public class GameOrder {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public BigDecimal getClearingScore() {
+        return clearingScore;
+    }
+
+    public void setClearingScore(BigDecimal clearingScore) {
+        this.clearingScore = clearingScore;
+    }
+
+    public Integer getResult() {
+        return result;
+    }
+
+    public void setResult(Integer result) {
+        this.result = result;
+    }
+
+    public String getOverState() {
+        return overState;
+    }
+
+    public void setOverState(String overState) {
+        this.overState = overState;
     }
 }

@@ -187,9 +187,10 @@ public class CrawlServiceImpl implements CrawlService {
     @Override
     public void updateMatch() {
         Map<String, Object> queryMap = new HashMap<>();
-        queryMap.put("state", "1");
+//        queryMap.put("state", "1");
         //查询数据库中正在进行的比赛
-        List<Game> gameList = gameMapper.listSelective(queryMap);
+//        List<Game> gameList = gameMapper.listSelective(queryMap);
+        List<Game> gameList = gameMapper.unfinishedGame();
         for (int i = 0; i < gameList.size(); i++) {
             Game game = gameList.get(i);
             Match match = Crawling.crawlMatchByCode(game.getExternalGameCode());

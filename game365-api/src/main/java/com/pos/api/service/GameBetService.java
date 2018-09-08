@@ -148,7 +148,7 @@ public class GameBetService {
                 gameOrder.setType((byte) type);
                 gameOrder.setUserId(userId);
                 gameOrder.setState("10");
-
+                gameOrder.setOverState("10");
                 gameOrderMapper.insert(gameOrder);
             }
             userAmount.setTotal(userAmount.getTotal().subtract(bigDecimal));

@@ -8,20 +8,47 @@
     <result column="user_id" property="userId" jdbcType="BIGINT" />
     <result column="score" property="score" jdbcType="DECIMAL" />
     <result column="clearing_score" property="clearingScore" jdbcType="DECIMAL" />
-    <result column="result" property="result" jdbcType="VARCHAR" />
+    <result column="result" property="result" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="TINYINT" />
     <result column="state" property="state" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="over_state" property="overState" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, order_no, game_bet_id, user_id, score, type, state, create_time, update_time,clearing_score,result
+    id, order_no, game_bet_id, user_id, score, type, state, create_time, update_time,clearing_score,result,over_state
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from game_order
     where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="pendingOrder" resultType="java.util.Map" parameterType="java.util.Map" >
+    SELECT
+        go.id AS orderId,
+        go.order_no AS orderNo,
+        go.score,
+        gb.`name`,
+        gb.odds,
+        gb.team,
+        g.id AS gameId,
+        g.state AS gameState,
+        g.left_score AS leftScore,
+        g.left_team AS leftTeam,
+        g.right_score AS rightScore,
+        g.right_team AS rightTeam
+    FROM
+        game_order go
+    LEFT JOIN game_bet gb ON gb.id = go.game_bet_id
+    LEFT JOIN game g ON g.id = gb.game_id
+    WHERE
+        NOW() > CONCAT(
+            g.contest_date,
+            ' ',
+            g.contest_time
+        )
+    AND go.state = '10'
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from game_order
@@ -30,11 +57,12 @@
   <insert id="insert" parameterType="com.wz.cashloan.core.model.GameOrder" >
     insert into game_order (id, order_no, game_bet_id, 
       user_id, score, type, 
-      state, create_time, update_time,clearing_score,result
+      state, create_time, update_time,clearing_score,result,over_state
       )
     values (#{id,jdbcType=BIGINT}, #{orderNo,jdbcType=VARCHAR}, #{gameBetId,jdbcType=BIGINT}, 
       #{userId,jdbcType=BIGINT}, #{score,jdbcType=DECIMAL}, #{type,jdbcType=TINYINT}, 
-      #{state,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},#{clearingScore,jdbcType=DECIMAL},#{result,jdbcType=VARCHAR}
+      #{state,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{clearingScore,jdbcType=DECIMAL},#{result,jdbcType=INTEGER},#{overState,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.wz.cashloan.core.model.GameOrder" >
@@ -117,7 +145,7 @@
         clearing_score = #{clearingScore,jdbcType=DECIMAL},
       </if>
       <if test="result != null" >
-        result = #{result,jdbcType=VARCHAR},
+        result = #{result,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=TINYINT},
@@ -130,6 +158,9 @@
       </if>
       <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="overState != null" >
+        over_state = #{overState,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -146,4 +177,47 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="notOverOrderNo" resultType="java.util.Map"  >
+    SELECT
+	t1.userId,
+	t1.order_no as orderNo
+    FROM
+        (
+            SELECT
+                MAX(user_id) as userId,
+                order_no,
+                GROUP_CONCAT(state) AS states
+            FROM
+                `game_order`
+            WHERE
+                over_state != 20
+            GROUP BY
+                order_no
+        ) t1
+    WHERE
+        locate('10', states) = 0
+  </select>
+
+  <select id="calcScore" resultType="java.lang.Double" parameterType="java.lang.String">
+    SELECT
+        CASE
+        WHEN MAX(go.type) = 1 THEN
+            SUM(go.clearing_score)
+        ELSE
+            (
+                CASE
+                WHEN sum(go.result) = 0 THEN
+                    sum(go.score) * SUM(gb.odds)
+                ELSE
+                    0
+                END
+            )
+        END AS totalScore
+    FROM
+        game_order go
+    LEFT JOIN game_bet gb ON gb.id = go.game_bet_id
+    WHERE
+	go.order_no = #{orderNo,jdbcType=VARCHAR};
+  </select>
 </mapper>

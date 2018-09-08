@@ -92,6 +92,10 @@
     from game
     where external_game_code = #{externalGameCode,jdbcType=VARCHAR}
   </select>
+  <select id="unfinishedGame" resultMap="BaseResultMap">
+      SELECT * FROM `game` where NOW()>CONCAT(contest_date,' ',contest_time) and state != 2;
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from game
     where id = #{id,jdbcType=BIGINT}
