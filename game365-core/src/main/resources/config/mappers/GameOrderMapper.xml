@@ -218,6 +218,6 @@
         game_order go
     LEFT JOIN game_bet gb ON gb.id = go.game_bet_id
     WHERE
-	go.order_no = #{orderNo,jdbcType=VARCHAR};
+	go.order_no = #{orderNo,jdbcType=VARCHAR}
   </select>
 </mapper>

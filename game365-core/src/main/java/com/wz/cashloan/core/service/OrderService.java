@@ -118,7 +118,9 @@ public class OrderService {
                 userAmountBill = new UserAmountBill();
 
                 Double score = gameOrderMapper.calcScore(orderNo);
-
+                if(score == null){
+                    score = 0.0;
+                }
                 userAmountBill.setGameOrderNo(orderNo);
                 userAmountBill.setTotal(BigDecimal.valueOf(score));
                 userAmountBill.setUserId(userId);
@@ -131,6 +133,7 @@ public class OrderService {
 
                     userAmountMapper.updateByPrimaryKey(userAmount);
                 }
+
 
 
             }
