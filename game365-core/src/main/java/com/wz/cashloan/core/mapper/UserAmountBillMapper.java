@@ -2,6 +2,7 @@ package com.wz.cashloan.core.mapper;
 
 import com.wz.cashloan.core.common.mapper.RDBatisDao;
 import com.wz.cashloan.core.model.UserAmountBill;
+
 @RDBatisDao
 public interface UserAmountBillMapper {
     int deleteByPrimaryKey(Long id);
@@ -15,4 +16,6 @@ public interface UserAmountBillMapper {
     int updateByPrimaryKeySelective(UserAmountBill record);
 
     int updateByPrimaryKey(UserAmountBill record);
+
+    UserAmountBill findByOrderNo(String gameOrderNo);
 }

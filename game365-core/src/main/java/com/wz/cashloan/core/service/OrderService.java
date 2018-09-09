@@ -3,8 +3,10 @@ package com.wz.cashloan.core.service;
 import com.wz.cashloan.core.mapper.GameOrderMapper;
 import com.wz.cashloan.core.mapper.GameProcessMapper;
 import com.wz.cashloan.core.mapper.UserAmountBillMapper;
+import com.wz.cashloan.core.mapper.UserAmountMapper;
 import com.wz.cashloan.core.model.GameOrder;
 import com.wz.cashloan.core.model.GameProcess;
+import com.wz.cashloan.core.model.UserAmount;
 import com.wz.cashloan.core.model.UserAmountBill;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,8 @@ public class OrderService {
     private GameProcessMapper gameProcessMapper;
     @Resource
     private UserAmountBillMapper userAmountBillMapper;
+    @Resource
+    private UserAmountMapper userAmountMapper;
 
     public void clearing() {
         List<Map> mapList = gameOrderMapper.pendingOrder();
@@ -109,15 +113,27 @@ public class OrderService {
             Map map = mapList1.get(i);
             Long userId = Long.valueOf(String.valueOf(map.get("userId")));
             String orderNo = String.valueOf(map.get("orderNo"));
-            UserAmountBill userAmountBill = new UserAmountBill();
+            UserAmountBill userAmountBill = userAmountBillMapper.findByOrderNo(orderNo);
+            if (userAmountBill == null) {
+                userAmountBill = new UserAmountBill();
 
-            Double score = gameOrderMapper.calcScore(orderNo);
+                Double score = gameOrderMapper.calcScore(orderNo);
 
-            userAmountBill.setGameOrderNo(orderNo);
-            userAmountBill.setTotal(BigDecimal.valueOf(score));
-            userAmountBill.setUserId(userId);
+                userAmountBill.setGameOrderNo(orderNo);
+                userAmountBill.setTotal(BigDecimal.valueOf(score));
+                userAmountBill.setUserId(userId);
 
-            userAmountBillMapper.insert(userAmountBill);
+                userAmountBillMapper.insert(userAmountBill);
+
+                UserAmount userAmount = userAmountMapper.findByUserId(userId);
+                if (userAmount != null) {
+                    userAmount.setTotal(userAmount.getTotal().add(BigDecimal.valueOf(score)));
+
+                    userAmountMapper.updateByPrimaryKey(userAmount);
+                }
+
+
+            }
 
         }
     }

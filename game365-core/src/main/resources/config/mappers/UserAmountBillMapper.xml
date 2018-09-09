@@ -11,6 +11,11 @@
   <sql id="Base_Column_List" >
     id, user_id, total, game_order_no, create_time
   </sql>
+  <select id="findByOrderNo" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_amount_bill where game_order_no = #{gameOrderNo,jdbcType=VARCHAR}
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
