@@ -143,7 +143,13 @@ public class GameBetService {
 
                 GameOrder gameOrder = new GameOrder();
                 gameOrder.setGameBetId(gameBetId);
-                gameOrder.setOrderNo(orderNo);
+                if (type == 2) {
+                    //通关模式 多个竞猜项 共一个单号，统一结算
+                    gameOrder.setOrderNo(orderNo);
+                } else {
+                    //普通模式一个竞猜项 对应一个单号
+                    gameOrder.setOrderNo(OrderNoUtil.getSerialNumber());
+                }
                 gameOrder.setScore(score);
                 gameOrder.setType((byte) type);
                 gameOrder.setUserId(userId);

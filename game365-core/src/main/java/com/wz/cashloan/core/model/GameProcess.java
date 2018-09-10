@@ -7,6 +7,8 @@ public class GameProcess {
 
     private Long gameId;
 
+    private String processName;
+
     private Integer rightScore;
 
     private Integer leftScore;
@@ -71,5 +73,13 @@ public class GameProcess {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getProcessName() {
+        return processName;
+    }
+
+    public void setProcessName(String processName) {
+        this.processName = processName;
     }
 }

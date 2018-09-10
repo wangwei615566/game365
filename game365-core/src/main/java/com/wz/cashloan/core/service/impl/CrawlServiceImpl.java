@@ -235,6 +235,7 @@ public class CrawlServiceImpl implements CrawlService {
                 if (gameProcess == null) {
                     gameProcess = new GameProcess();
                     gameProcess.setGameId(gameId);
+                    gameProcess.setProcessName("单局比分");
                     gameProcess.setLeftScore(lefts.get(k));
                     gameProcess.setRightScore(rights.get(k));
                     gameProcess.setRound(round);

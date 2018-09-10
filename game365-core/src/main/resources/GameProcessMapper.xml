@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.wz.cashloan.core.model.GameProcess" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="game_id" property="gameId" jdbcType="BIGINT" />
+    <result column="process_name" property="processName" jdbcType="VARCHAR" />
     <result column="right_score" property="rightScore" jdbcType="INTEGER" />
     <result column="left_score" property="leftScore" jdbcType="INTEGER" />
     <result column="round" property="round" jdbcType="VARCHAR" />
@@ -11,7 +12,7 @@
     <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, game_id, right_score, left_score, round, create_time, remark
+    id, game_id, process_name, right_score, left_score, round, create_time, remark
   </sql>
   <sql id="searchBy">
     <trim prefix="where" prefixOverrides="and|or">
@@ -46,10 +47,10 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.wz.cashloan.core.model.GameProcess" >
-    insert into game_process (id, game_id, right_score, 
+    insert into game_process (id, game_id, process_name,right_score,
       left_score, round, create_time, 
       remark)
-    values (#{id,jdbcType=BIGINT}, #{gameId,jdbcType=BIGINT}, #{rightScore,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=BIGINT}, #{gameId,jdbcType=BIGINT},#{processName,jdbcType=VARCHAR}, #{rightScore,jdbcType=INTEGER},
       #{leftScore,jdbcType=INTEGER}, #{round,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{remark,jdbcType=VARCHAR})
   </insert>
@@ -107,6 +108,9 @@
     <set >
       <if test="gameId != null" >
         game_id = #{gameId,jdbcType=BIGINT},
+      </if>
+      <if test="processName != null" >
+        process_name = #{processName,jdbcType=VARCHAR},
       </if>
       <if test="rightScore != null" >
         right_score = #{rightScore,jdbcType=INTEGER},
