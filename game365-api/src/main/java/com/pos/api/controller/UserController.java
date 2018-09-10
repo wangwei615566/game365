@@ -1,9 +1,13 @@
 package com.pos.api.controller;
 
+import com.github.pagehelper.Page;
 import com.pos.api.service.SmsService;
 import com.pos.api.service.UserService;
+import com.wz.cashloan.core.common.context.Constant;
+import com.wz.cashloan.core.common.util.RdPage;
 import com.wz.cashloan.core.common.util.ServletUtils;
 import com.wz.cashloan.core.common.web.controller.BaseController;
+import com.wz.cashloan.core.model.GoodsOrder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,6 +63,7 @@ public class UserController extends BaseController {
 
     /**
      * 获取短息验证码
+     *
      * @param loginName
      * @param type
      */
@@ -74,6 +79,7 @@ public class UserController extends BaseController {
 
     /**
      * 忘记密码
+     *
      * @param loginName
      * @param code
      * @param type
@@ -89,4 +95,43 @@ public class UserController extends BaseController {
         ServletUtils.writeToResponse(response, result);
     }
 
+    @RequestMapping("/user/applyCash.htm")
+    public void applyCash(@RequestParam(value = "userId") Long userId,
+                          @RequestParam(value = "code") String code,
+                          @RequestParam(value = "amount") Double amount,
+                          @RequestParam(value = "receiver") String receiver,
+                          @RequestParam(value = "alipayAccount") String alipayAccount)
+
+    {
+        Map<String, Object> result = new HashMap<>();
+        result = userService.applyCash(userId, code, receiver, alipayAccount, amount);
+        ServletUtils.writeToResponse(response, result);
+    }
+
+    @RequestMapping("/user/goodsOrder.htm")
+    public void goodsOrder(@RequestParam(value = "userId") Long userId,
+                           @RequestParam(value = "current") int current,
+                           @RequestParam(value = "pageSize") int pageSize) {
+        Map<String, Object> result = new HashMap<>();
+        Page<GoodsOrder> page = userService.goodsOrder(userId, current, pageSize);
+        result.put(Constant.RESPONSE_DATA, page.getResult());
+        result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));
+        result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+        result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
+        ServletUtils.writeToResponse(response, result);
+    }
+
+
+    @RequestMapping("/user/saveShippingAddr.htm")
+    public void goodsOrder(@RequestParam(value = "userId") Long userId,
+                           @RequestParam(value = "province") String province,
+                           @RequestParam(value = "city") String city,
+                           @RequestParam(value = "area") String area,
+                           @RequestParam(value = "name") String name,
+                           @RequestParam(value = "detailAddr") String detailAddr,
+                           @RequestParam(value = "mobile") String mobile) {
+        Map<String, Object> result = new HashMap<>();
+        result = userService.saveShippingAddr(userId, province, city,area,detailAddr,mobile,name);
+        ServletUtils.writeToResponse(response, result);
+    }
 }

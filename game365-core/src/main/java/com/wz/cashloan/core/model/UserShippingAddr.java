@@ -7,6 +7,10 @@ public class UserShippingAddr {
 
     private Long userId;
 
+    private String mobile;
+
+    private String name;
+
     private String province;
 
     private String city;
@@ -35,6 +39,22 @@ public class UserShippingAddr {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile == null ? null : mobile.trim();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public String getProvince() {
@@ -81,8 +101,8 @@ public class UserShippingAddr {
         return updateTime;
     }
 
-    public void setUpdateTime(Date udpateTime) {
-        this.updateTime = udpateTime;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     public Date getCreateTime() {

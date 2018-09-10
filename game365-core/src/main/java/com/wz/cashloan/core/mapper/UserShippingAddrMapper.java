@@ -15,4 +15,6 @@ public interface UserShippingAddrMapper {
     int updateByPrimaryKeySelective(UserShippingAddr record);
 
     int updateByPrimaryKey(UserShippingAddr record);
+
+    UserShippingAddr selectByUserId(Long id);
 }

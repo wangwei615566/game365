@@ -24,4 +24,9 @@ public class SmsModel {
 	 */
 	public static final String SMS_TYPE_FINDPAY = "findPay";
 
+	/**
+	 * 操作验证
+	 */
+	public static final String SMS_TYPE_OPERATOR = "operator";
+
 }

@@ -2,6 +2,9 @@ package com.wz.cashloan.core.mapper;
 
 import com.wz.cashloan.core.common.mapper.RDBatisDao;
 import com.wz.cashloan.core.model.UserCashLog;
+
+import java.util.List;
+
 @RDBatisDao
 public interface UserCashLogMapper {
     int deleteByPrimaryKey(Long id);
@@ -15,4 +18,6 @@ public interface UserCashLogMapper {
     int updateByPrimaryKeySelective(UserCashLog record);
 
     int updateByPrimaryKey(UserCashLog record);
+
+    List<UserCashLog> selectByUserIdAndToday(Long userId);
 }
