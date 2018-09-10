@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by Hbx on 2018/8/24.
@@ -54,7 +55,11 @@ public class GoodsService {
             return -1;
         }
         GoodsOrder goodsOrder = new GoodsOrder();
-        goodsOrder.setAmount(BigDecimal.valueOf(amount));
+        Random random = new Random();
+        int randomNumber = random.nextInt(500);
+        //尾数
+        Double a = (double) randomNumber / 100;
+        goodsOrder.setAmount(BigDecimal.valueOf(amount + a));
         goodsOrder.setNum(num);
         goodsOrder.setOrderNo(OrderNoUtil.getSerialNumber());
         goodsOrder.setUserId(userId);
