@@ -78,24 +78,24 @@ public class SysLoginController extends BaseController {
 			HttpServletResponse response,
 			HttpServletRequest request, HttpSession session) throws Exception {
 		Map<String, Object> res = new HashMap<String, Object>();
-			SysUser sysUser = (SysUser) request.getSession().getAttribute("SysUser");
-			if(sysUser != null){
-				res.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		SysUser sysUser = (SysUser) request.getSession().getAttribute("SysUser");
+		if(sysUser != null){
+			res.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+		} else {
+			password = passwordEncoder.encodePassword(String.valueOf(password));
+			Map<String,Object> params = new HashMap<>();
+			params.put("userName",username);
+			params.put("password",password);
+			SysUser sysUserBySql = sysUserService.loginByUserName(params);
+			if(sysUserBySql == null){
+				res.put(Constant.RESPONSE_CODE, Constant.OTHER_CODE_VALUE);
+				res.put(Constant.RESPONSE_CODE_MSG, "密码错误请重新输入");
 			} else {
-				password = passwordEncoder.encodePassword(String.valueOf(password));
-				Map<String,Object> params = new HashMap<>();
-				params.put("userName",username);
-				params.put("password",password);
-				SysUser sysUserBySql = sysUserService.loginByUserName(params);
-				if(sysUserBySql == null){
-					res.put(Constant.RESPONSE_CODE, Constant.OTHER_CODE_VALUE);
-					res.put(Constant.RESPONSE_CODE_MSG, "密码错误请重新输入");
-				} else {
-					session.setAttribute("SysUser",sysUserBySql);
-					res.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
-				}
+				session.setAttribute("SysUser",sysUserBySql);
+				res.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 			}
-			ServletUtils.writeToResponse(response, res);
+		}
+		ServletUtils.writeToResponse(response, res);
 	}
 
 	@RequestMapping(value = "/system/user/loginOut.htm")
@@ -165,12 +165,12 @@ public class SysLoginController extends BaseController {
 	public void findUser(HttpServletResponse response, HttpServletRequest request) throws Exception{
 		Map<String, Object> responsemap = new HashMap<String, Object>();
 		SysUser sysUser = this.getLoginUser(request);
-		if (null==sysUser) {
-			responsemap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-			responsemap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
-			ServletUtils.writeToResponse(response, responsemap);
-			return;
-		}
+//		if (null==sysUser) {
+//			responsemap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
+//			responsemap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
+//			ServletUtils.writeToResponse(response, responsemap);
+//			return;
+//		}
 		responsemap.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 		responsemap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_SUCCESS);
 		ServletUtils.writeToResponse(response, responsemap);

@@ -22,6 +22,20 @@ public class Goods {
 
     private Date createTime;
 
+    public Goods() {
+    }
+
+    public Goods(String name, BigDecimal price, String spec, String picture, Byte state, String desc, Date updateTime, Date createTime) {
+        this.name = name;
+        this.price = price;
+        this.spec = spec;
+        this.picture = picture;
+        this.state = state;
+        this.desc = desc;
+        this.updateTime = updateTime;
+        this.createTime = createTime;
+    }
+
     public Long getId() {
         return id;
     }

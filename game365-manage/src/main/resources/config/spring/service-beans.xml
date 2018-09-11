@@ -19,7 +19,6 @@
 
     <!-- Security不支持自定义注解注入service -->
     <context:component-scan base-package="com.wz.cashloan.core.service,com.wz.cashloan.system.service">
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
     </context:component-scan>
     <!-- <bean id="sysUserService" class="com.rongdu.arc.modules.system.service.impl.SysUserServiceImpl"/>
     <bean id="sysMenuService" class="com.rongdu.arc.modules.system.service.impl.SysMenuServiceImpl"/>

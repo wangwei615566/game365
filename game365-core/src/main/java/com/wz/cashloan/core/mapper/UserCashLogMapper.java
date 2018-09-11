@@ -5,6 +5,10 @@ import com.wz.cashloan.core.model.UserCashLog;
 
 import java.util.List;
 
+
+import java.util.List;
+import java.util.Map;
+
 @RDBatisDao
 public interface UserCashLogMapper {
     int deleteByPrimaryKey(Long id);
@@ -20,4 +24,8 @@ public interface UserCashLogMapper {
     int updateByPrimaryKey(UserCashLog record);
 
     List<UserCashLog> selectByUserIdAndToday(Long userId);
+
+    List<Map<String,Object>> listSelective(Map<String, Object> params);
+
+    int updateOrder(Map<String, Object> params);
 }
