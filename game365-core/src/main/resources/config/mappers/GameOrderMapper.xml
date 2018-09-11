@@ -24,6 +24,9 @@
     from game_order
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="pendingOrder" resultType="java.util.String" parameterType="java.util.Map">
+    SELECT order_no FROM `game_order` where state = #{state,jdbcType=VARCHAR} and user_id = GROUP BY order_no
+  </select>
   <select id="pendingOrder" resultType="java.util.Map" parameterType="java.util.Map" >
     SELECT
         go.id AS orderId,

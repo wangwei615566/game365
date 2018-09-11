@@ -27,6 +27,12 @@ public class GoodsController extends BaseController {
     @Resource
     private GoodsService goodsService;
 
+    /**
+     * 获取商品列表
+     * @param searchParams
+     * @param current
+     * @param pageSize
+     */
     @RequestMapping("/goods/list.htm")
     public void list(@RequestParam(value = "searchParams", required = false) String searchParams,
                      @RequestParam(value = "current") int current,
@@ -43,7 +49,13 @@ public class GoodsController extends BaseController {
         ServletUtils.writeToResponse(response, result);
     }
 
-
+    /**
+     * 商品下单
+     * @param userId
+     * @param num
+     * @param amount
+     * @param goodsId
+     */
     @RequestMapping("/goods/saveOrder.htm")
     public void list(
             @RequestParam(value = "userId") Long userId,

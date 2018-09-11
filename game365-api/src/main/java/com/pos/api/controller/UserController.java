@@ -30,6 +30,12 @@ public class UserController extends BaseController {
     @Resource
     private SmsService smsService;
 
+    /**
+     * 注册
+     * @param loginName
+     * @param loginPwd
+     * @param code
+     */
     @RequestMapping("/user/register.htm")
     public void list(@RequestParam(value = "loginName") String loginName,
                      @RequestParam(value = "loginPwd") String loginPwd,
@@ -41,6 +47,11 @@ public class UserController extends BaseController {
         ServletUtils.writeToResponse(response, result);
     }
 
+    /**
+     * 登录
+     * @param loginName
+     * @param loginPwd
+     */
     @RequestMapping("/user/login.htm")
     public void login(@RequestParam(value = "loginName") String loginName,
                       @RequestParam(value = "loginPwd") String loginPwd)
@@ -51,6 +62,11 @@ public class UserController extends BaseController {
         ServletUtils.writeToResponse(response, result);
     }
 
+    /**
+     * 重置密码
+     * @param loginName
+     * @param loginPwd
+     */
     @RequestMapping("/user/resetPassword.htm")
     public void resetPassword(@RequestParam(value = "loginName") String loginName,
                               @RequestParam(value = "loginPwd") String loginPwd)
@@ -95,6 +111,14 @@ public class UserController extends BaseController {
         ServletUtils.writeToResponse(response, result);
     }
 
+    /**
+     * 红包提现申请
+     * @param userId
+     * @param code
+     * @param amount
+     * @param receiver
+     * @param alipayAccount
+     */
     @RequestMapping("/user/applyCash.htm")
     public void applyCash(@RequestParam(value = "userId") Long userId,
                           @RequestParam(value = "code") String code,
@@ -108,6 +132,12 @@ public class UserController extends BaseController {
         ServletUtils.writeToResponse(response, result);
     }
 
+    /**
+     * 获取购买请求列表
+     * @param userId
+     * @param current
+     * @param pageSize
+     */
     @RequestMapping("/user/goodsOrder.htm")
     public void goodsOrder(@RequestParam(value = "userId") Long userId,
                            @RequestParam(value = "current") int current,
@@ -121,7 +151,16 @@ public class UserController extends BaseController {
         ServletUtils.writeToResponse(response, result);
     }
 
-
+    /**
+     * 更新收货地址
+     * @param userId
+     * @param province
+     * @param city
+     * @param area
+     * @param name
+     * @param detailAddr
+     * @param mobile
+     */
     @RequestMapping("/user/saveShippingAddr.htm")
     public void goodsOrder(@RequestParam(value = "userId") Long userId,
                            @RequestParam(value = "province") String province,

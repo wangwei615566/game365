@@ -27,6 +27,12 @@ public class GameController extends BaseController {
     @Resource
     private GameService gameService;
 
+    /**
+     * 赛事列表
+     * @param searchParams
+     * @param current
+     * @param pageSize
+     */
     @RequestMapping("/game/list.htm")
     public void list(@RequestParam(value = "searchParams", required = false) String searchParams,
                      @RequestParam(value = "current") int current,
@@ -43,6 +49,11 @@ public class GameController extends BaseController {
         ServletUtils.writeToResponse(response, result);
     }
 
+    /**
+     * 赛事竞猜项
+     * @param gameId
+     * @param userId
+     */
     @RequestMapping("/game/listBet.htm")
     public void listBet(@RequestParam(value = "gameId") Long gameId,
                         @RequestParam(value = "userId") Long userId)
@@ -59,5 +70,7 @@ public class GameController extends BaseController {
         result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
         ServletUtils.writeToResponse(response, result);
     }
+
+
 
 }
