@@ -65,7 +65,7 @@ public class UserService {
                 return result;
             }
             result = smsService.checkCode(loginName, SmsModel.SMS_TYPE_REGISTER, code);
-            if (Constant.FAIL_CODE_VALUE == result.get(Constant.RESPONSE_CODE)) {
+            if (!"200".equals(result.get(Constant.RESPONSE_CODE))) {
                 return result;
             }
             loginPwd = MD5.md5(loginPwd);
@@ -157,32 +157,32 @@ public class UserService {
 
         if (StringUtil.isAnyBlank(receiver, alipayAccount) || amount < 100 || amount > 50000) {
             result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-            result.put(Constant.RESPONSE_CODE, "参数有误");
+            result.put(Constant.RESPONSE_CODE_MSG, "参数有误");
             return result;
         }
         try {
             User user = userMapper.selectByPrimaryKey(userId);
             if (user == null) {
                 result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-                result.put(Constant.RESPONSE_CODE, "操作失败,用户不存在");
+                result.put(Constant.RESPONSE_CODE_MSG, "操作失败,用户不存在");
                 return result;
             }
             UserAmount userAmount = userAmountMapper.findByUserId(userId);
             if (userAmount == null) {
                 result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-                result.put(Constant.RESPONSE_CODE, "操作失败,用户账户不存在");
+                result.put(Constant.RESPONSE_CODE_MSG, "操作失败,用户账户不存在");
                 return result;
             }
             //核验验证码
-            result = smsService.checkCode(user.getLoginName(), SmsModel.SMS_TYPE_REGISTER, code);
-            if (Constant.FAIL_CODE_VALUE == result.get(Constant.RESPONSE_CODE)) {
+            result = smsService.checkCode(user.getLoginName(), SmsModel.SMS_TYPE_OPERATOR, code);
+            if (!"200".equals(result.get(Constant.RESPONSE_CODE))) {
                 return result;
             }
 
             List<UserCashLog> userCashLogList = userCashLogMapper.selectByUserIdAndToday(userId);
             if (userCashLogList.size() >= 3) {
                 result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-                result.put(Constant.RESPONSE_CODE, "超过当日申请次数");
+                result.put(Constant.RESPONSE_CODE_MSG, "超过当日申请次数");
                 return result;
             }
 
@@ -191,7 +191,7 @@ public class UserService {
             int a = current.compareTo(cash);
             if (a == -1) {
                 result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-                result.put(Constant.RESPONSE_CODE, "余额不足");
+                result.put(Constant.RESPONSE_CODE_MSG, "余额不足");
                 return result;
             }
 
@@ -200,7 +200,7 @@ public class UserService {
             userCashLog.setAccountNo(alipayAccount);
             userCashLog.setAmount(cash);
             userCashLog.setState((byte) 2);
-
+            userCashLog.setUserId(userId);
             userCashLogMapper.insert(userCashLog);
 
 
@@ -236,7 +236,7 @@ public class UserService {
             User user = userMapper.selectByPrimaryKey(userId);
             if (user == null) {
                 result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
-                result.put(Constant.RESPONSE_CODE, "操作失败,用户不存在");
+                result.put(Constant.RESPONSE_CODE_MSG, "操作失败,用户不存在");
                 return result;
             }
             UserShippingAddr userShippingAddr = userShippingAddrMapper.selectByUserId(userId);

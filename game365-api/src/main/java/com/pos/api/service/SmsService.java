@@ -107,11 +107,11 @@ public class SmsService {
     public Map checkCode(String loginName, String type, String code) {
         Map result = new HashMap();
         Map<String, Object> queryMap = new HashMap<>();
-        result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+        result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
         result.put(Constant.RESPONSE_CODE_MSG, "验证失败");
         User user = userMapper.selectByLoginName(loginName);
         if (user == null) {
-            result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_PARAM_INSUFFICIENT);
+            result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
             result.put(Constant.RESPONSE_CODE_MSG, "用户不存在!");
             return result;
         }
@@ -122,7 +122,7 @@ public class SmsService {
         }
 
         if (StringUtil.isBlank(loginName) || StringUtil.isBlank(type) || StringUtil.isBlank(code) || !StringUtil.isPhone(loginName)) {
-            result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+            result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
             result.put(Constant.RESPONSE_CODE_MSG, "手机号码或验证码错误");
             return result;
         }
@@ -151,7 +151,7 @@ public class SmsService {
             Date d2 = new Date();
             long diff = d2.getTime() - d1.getTime();
             if (diff > timeLimit * 60 * 1000) {
-                result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+                result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
                 result.put(Constant.RESPONSE_CODE_MSG, "验证码已过期");
                 return result;
             }
