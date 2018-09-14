@@ -133,4 +133,30 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <update id="updateOrder" parameterType="java.util.HashMap" >
+    update user_cash_log
+    <set >
+      <if test="accountNo != null" >
+        account_no = #{accountNo,jdbcType=VARCHAR},
+      </if>
+      <if test="accountName != null" >
+        account_name = #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="listSelective" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select
+    u.login_name as loginName, l.account_no as accountNo, l.account_name as accountName, l.amount, l.create_time as createTime,l.state,l.id,l.user_id as userId
+    from user_cash_log l LEFT JOIN user u on l.user_id=u.id
+    <include refid="searchBy"/>
+  </select>
 </mapper>

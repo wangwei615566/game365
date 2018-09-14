@@ -3,7 +3,6 @@ package com.wz.cashloan.core.service;
 import com.github.pagehelper.Page;
 import com.wz.cashloan.core.model.Goods;
 
-import java.util.List;
 import java.util.Map;
 
 public interface GoodService {

@@ -4,6 +4,7 @@ import com.wz.cashloan.core.common.mapper.RDBatisDao;
 import com.wz.cashloan.core.model.GoodsOrder;
 
 import java.util.List;
+import java.util.Map;
 
 @RDBatisDao
 public interface GoodsOrderMapper {
@@ -20,4 +21,8 @@ public interface GoodsOrderMapper {
     int updateByPrimaryKey(GoodsOrder record);
 
     List<GoodsOrder> selectByUserId(Long userId);
+
+    List<Map<String,Object>> listSelect(Map<String,Object> params);
+
+    int updateOrder(Map<String,Object> params);
 }

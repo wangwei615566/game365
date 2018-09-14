@@ -86,7 +86,6 @@ public class ManageFoodController extends ManageBaseController {
             result.put(Constant.RESPONSE_CODE_MSG, "失败");
         }
         ServletUtils.writeToResponse(response, result);
-        ServletUtils.writeToResponse(response, result);
     }
 
     /**

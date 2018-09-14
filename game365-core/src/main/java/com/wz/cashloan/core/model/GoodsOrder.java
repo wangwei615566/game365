@@ -28,6 +28,19 @@ public class GoodsOrder {
 
     private Date createTime;
 
+    public GoodsOrder() {
+    }
+
+    public GoodsOrder(Long id,Integer num, BigDecimal amount, BigDecimal couponAmt, Byte state, String shippingAddr, String remark) {
+        this.id = id;
+        this.num = num;
+        this.amount = amount;
+        this.couponAmt = couponAmt;
+        this.state = state;
+        this.shippingAddr = shippingAddr;
+        this.remark = remark;
+    }
+
     public Long getId() {
         return id;
     }

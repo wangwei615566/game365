@@ -27,5 +27,7 @@ public interface GameMapper {
 
     List<GameModel> listGameModel(Map<String, Object> map);
 
+    List<Map<String, Object>> listSelect(Map<String, Object> map);
+
     List<Game> unfinishedGame();
 }

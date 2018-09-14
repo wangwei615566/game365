@@ -80,6 +80,26 @@
     order by contest_date,contest_time
   </select>
 
+  <select id="listSelect" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+    select
+    g.external_game_code as externalGameCode,g.name as gameName,c.name as classifyName,g.left_team as lefgTeam,
+    g.left_team_img as leftTeamImg,g.left_score as leftScore,g.right_team as rightTeam,g.right_team_img as rightTeamImg,
+    g.right_score as rightScore,g.contest_date as contestDate,g.contest_time as contestTime,g.state,g.create_time as createTime,
+    b.name as betName,b.team,b.odds,b.guess_over_time as guessOverTime,b.id as betId
+    from game g LEFT JOIN game_classify c on g.game_classify_id=c.id LEFT JOIN game_bet b on g.id=b.game_id
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="name !=null and name != ''">
+        g.`name` = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="externalGameCode !=null and externalGameCode != ''">
+        and g.external_game_code = #{externalGameCode,jdbcType=VARCHAR}
+      </if>
+      <if test="state != null and state != ''">
+        and g.state = #{state,jdbcType=TINYINT}
+      </if>
+    </trim>
+  </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select
     <include refid="Base_Column_List" />

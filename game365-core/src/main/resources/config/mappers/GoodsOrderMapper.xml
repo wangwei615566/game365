@@ -19,6 +19,16 @@
     id, user_id, goods_id,order_no, num, amount, coupon_amt, state, shipping_addr, remark, update_time,
     create_time
   </sql>
+  <sql id="searchBy">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="orderNo !=null and orderNo != ''">
+        and order_no = #{orderNo,jdbcType=VARCHAR}
+      </if>
+      <if test="state !=null">
+        and state = #{state,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
@@ -30,6 +40,20 @@
     <include refid="Base_Column_List" />
     from goods_order
     where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <select id="listSelect" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select
+    o.id,o.order_no as orderNo, o.num, o.amount, o.coupon_amt as couponAmt, o.state, o.shipping_addr as shippingAddr,
+    o.remark,o.create_time as createTime,g.name,u.login_name as loginName
+    from goods_order o LEFT JOIN USER u on o.user_id=u.id LEFT JOIN goods g on o.goods_id=g.id
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="orderNo !=null and orderNo != ''">
+        and o.order_no = #{orderNo,jdbcType=VARCHAR}
+      </if>
+      <if test="state !=null">
+        and o.state = #{state,jdbcType=VARCHAR}
+      </if>
+    </trim>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from goods_order
@@ -168,4 +192,5 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
 </mapper>
