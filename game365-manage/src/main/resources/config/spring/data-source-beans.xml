@@ -109,7 +109,7 @@
 		<property name="annotationClass" value="com.wz.cashloan.core.common.mapper.RDBatisDao"/>
 	</bean>
 
-	<context:component-scan base-package="com.wz.manage.service,com.wz.manage.controller">
+	<context:component-scan base-package="com.wz.manage.service">
 		<context:include-filter type="annotation" expression="org.aspectj.lang.annotation.Aspect"/>
 	</context:component-scan>
 

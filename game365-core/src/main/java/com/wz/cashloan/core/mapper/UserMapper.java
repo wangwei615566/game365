@@ -27,4 +27,6 @@ public interface UserMapper {
 
     User selectByLoginName(String loginName);
 //    Map<String,Object>findLevelToUserId(Long userId);
+
+    List<Map<String,Object>> userList(Map<String,Object> param);
 }
