@@ -20,9 +20,16 @@ public interface GameOrderMapper {
 
     int updateByPrimaryKey(GameOrder record);
 
+    int updateOverStateByOrderNo(String orderNo);
+
     List<Map> pendingOrder();
 
     List<Map> notOverOrderNo();
 
     Double calcScore(String orderNo);
+
+    List<String> selectOrderByStateAndUserId(Map<String, Object> objectMap);
+
+    List<Map> selectMapByOrderNo(String orderNo);
+
 }

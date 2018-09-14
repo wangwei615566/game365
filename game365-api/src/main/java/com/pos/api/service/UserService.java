@@ -1,11 +1,14 @@
 package com.pos.api.service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.pos.api.model.SmsModel;
 import com.wz.cashloan.core.common.context.Constant;
 import com.wz.cashloan.core.common.util.MD5;
 import com.wz.cashloan.core.common.util.StringUtil;
+import com.wz.cashloan.core.mapper.GameOrderMapper;
 import com.wz.cashloan.core.mapper.GoodsOrderMapper;
 import com.wz.cashloan.core.mapper.UserAmountMapper;
 import com.wz.cashloan.core.mapper.UserCashLogMapper;
@@ -48,6 +51,8 @@ public class UserService {
     private GoodsOrderMapper goodsOrderMapper;
     @Resource
     private UserShippingAddrMapper userShippingAddrMapper;
+    @Resource
+    private GameOrderMapper gameOrderMapper;
 
     public Map register(String loginName, String loginPwd, String code) {
         Map result = new HashMap();
@@ -276,4 +281,78 @@ public class UserService {
         return result;
     }
 
+
+    public JSONObject myGoingOrder(Long userId, int current, int pageSize) {
+        JSONObject res = new JSONObject();
+        PageHelper.startPage(current, pageSize);
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("userId", userId);
+        queryMap.put("overState", "10");
+        List<String> list = gameOrderMapper.selectOrderByStateAndUserId(queryMap);
+
+        Page<String> stringPage = (Page<String>) list;
+        List<String> stringList = stringPage.getResult();
+        JSONArray data = new JSONArray();
+//        Page<JSONObject> jsonObjectPage = new Page<>(stringPage.getPageNum(),stringPage.getPageSize());
+        for (int i = 0; i < stringList.size(); i++) {
+            JSONObject object = new JSONObject();
+            String orderNo = stringList.get(i);
+            List<Map> mapList = gameOrderMapper.selectMapByOrderNo(orderNo);
+            if (mapList.size() > 0) {
+                Map objectMap = mapList.get(0);
+                String createTime = String.valueOf(objectMap.get("create_time"));
+                if ("1".equals(String.valueOf(objectMap.get("type")))) {
+                    object.put("type", "单注");
+                } else {
+                    object.put("type", mapList.size() + "串1");
+                }
+
+                JSONArray jsonArray = new JSONArray();
+                Double petScore = 0.0;
+                Double maxScore = 0.0;
+                Double odds = 0.0;
+                for (int j = 0; j < mapList.size(); j++) {
+                    Map map = mapList.get(j);
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("team", map.get("team"));
+                    jsonObject.put("betName", map.get("name"));
+                    String state = "";
+                    if (map.get("result") == null) {
+                        state = "进行中";
+                    } else {
+                        if ("1".equals(map.get("result"))) {
+                            state = "输";
+                        } else {
+                            state = "赢";
+                        }
+                    }
+                    jsonObject.put("state", state);
+                    jsonObject.put("odds", map.get("odds"));
+                    jsonArray.add(jsonObject);
+
+                    petScore += Double.parseDouble(String.valueOf(map.get("score")));
+                    odds += Double.parseDouble(String.valueOf(map.get("odds")));
+                }
+
+                maxScore = petScore * odds;
+
+                object.put("petScore", petScore);
+                object.put("maxScore", maxScore);
+                object.put("createTime", createTime);
+                object.put("gamePets", jsonArray);
+
+                data.add(object);
+            }
+
+        }
+        JSONObject page = new JSONObject();
+        page.put("pageNum", stringPage.getPageNum());
+        page.put("pageSize", stringPage.getPageSize());
+        page.put("total", stringPage.getTotal());
+        page.put("pages", stringPage.getPages());
+        res.put("data", data);
+        res.put("page", page);
+        return res;
+
+    }
 }

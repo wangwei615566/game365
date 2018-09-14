@@ -137,6 +137,8 @@ public class OrderService {
 
 
             }
+            //将订单结清状态置为20
+            gameOrderMapper.updateOverStateByOrderNo(orderNo);
 
         }
     }

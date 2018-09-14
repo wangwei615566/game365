@@ -24,8 +24,39 @@
     from game_order
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <select id="pendingOrder" resultType="java.util.String" parameterType="java.util.Map">
-    SELECT order_no FROM `game_order` where state = #{state,jdbcType=VARCHAR} and user_id = GROUP BY order_no
+  <select id="selectMapByOrderNo" resultType="java.util.Map" parameterType="java.lang.String" >
+     SELECT
+        go.create_time,
+        go.type,
+        go.score,
+        gb.`name`,
+        gb.team,
+        gb.odds
+    FROM
+        `game_order` go
+    LEFT JOIN game_bet gb ON gb.id = go.game_bet_id
+    WHERE
+        go.order_no = #{orderNo,jdbcType=VARCHAR}
+  </select>
+  <select id="selectOrderByStateAndUserId" resultType="java.lang.String" parameterType="java.util.Map">
+    SELECT DISTINCT
+	t1.order_no
+    FROM
+        (
+            SELECT
+                order_no,
+                create_time
+            FROM
+                `game_order`
+            WHERE
+                over_state = #{overState,jdbcType=VARCHAR}
+            AND user_id = #{userId,jdbcType=BIGINT}
+            GROUP BY
+                order_no,
+                create_time
+            ORDER BY
+                create_time DESC
+        ) t1
   </select>
   <select id="pendingOrder" resultType="java.util.Map" parameterType="java.util.Map" >
     SELECT
@@ -180,7 +211,11 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-
+    <update id="updateOverStateByOrderNo" parameterType="java.lang.String" >
+    update game_order
+    set over_state = '20'
+    where order_no = #{orderNo,jdbcType=VARCHAR}
+  </update>
   <select id="notOverOrderNo" resultType="java.util.Map"  >
     SELECT
 	t1.userId,
