@@ -29,6 +29,7 @@
         go.create_time,
         go.type,
         go.score,
+        go.result,
         gb.`name`,
         gb.team,
         gb.odds

@@ -1,6 +1,6 @@
 package com.pos.api.controller;
 
-import com.pos.api.service.GameBetService;
+import com.pos.api.service.ApiGameBetService;
 import com.wz.cashloan.core.common.context.Constant;
 import com.wz.cashloan.core.common.util.ServletUtils;
 import com.wz.cashloan.core.common.web.controller.BaseController;
@@ -23,7 +23,7 @@ import java.util.Map;
 public class GameBetController extends BaseController {
 
     @Autowired
-    private GameBetService gameBetService;
+    private ApiGameBetService apiGameBetService;
 
     /**
      *添加赛事投注（购物车）
@@ -36,7 +36,7 @@ public class GameBetController extends BaseController {
 
     {
 
-        ServletUtils.writeToResponse(response, gameBetService.add(userId, gameBetId));
+        ServletUtils.writeToResponse(response, apiGameBetService.add(userId, gameBetId));
     }
 
     /**
@@ -49,7 +49,7 @@ public class GameBetController extends BaseController {
                        @RequestParam(value = "gameBetId") Long gameBetId)
 
     {
-        ServletUtils.writeToResponse(response, gameBetService.remove(userId, gameBetId));
+        ServletUtils.writeToResponse(response, apiGameBetService.remove(userId, gameBetId));
     }
 
     /**
@@ -61,7 +61,7 @@ public class GameBetController extends BaseController {
 
     {
         Map result = new HashMap();
-        result.put(Constant.RESPONSE_DATA, gameBetService.listDetail(userId));
+        result.put(Constant.RESPONSE_DATA, apiGameBetService.listDetail(userId));
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
         result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
         ServletUtils.writeToResponse(response, result);
@@ -83,7 +83,7 @@ public class GameBetController extends BaseController {
 
     {
 
-        ServletUtils.writeToResponse(response, gameBetService.saveBetOrder(userId,gameBets,totalScore,type));
+        ServletUtils.writeToResponse(response, apiGameBetService.saveBetOrder(userId,gameBets,totalScore,type));
     }
 
 }

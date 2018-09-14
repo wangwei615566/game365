@@ -1,8 +1,8 @@
 package com.pos.api.controller;
 
 import com.github.pagehelper.Page;
-import com.pos.api.service.SmsService;
-import com.pos.api.service.UserService;
+import com.pos.api.service.ApiSmsService;
+import com.pos.api.service.ApiUserService;
 import com.wz.cashloan.core.common.context.Constant;
 import com.wz.cashloan.core.common.util.RdPage;
 import com.wz.cashloan.core.common.util.ServletUtils;
@@ -26,9 +26,9 @@ import java.util.Map;
 @RequestMapping("/api")
 public class UserController extends BaseController {
     @Resource
-    private UserService userService;
+    private ApiUserService apiUserService;
     @Resource
-    private SmsService smsService;
+    private ApiSmsService apiSmsService;
 
     /**
      * 注册
@@ -43,7 +43,7 @@ public class UserController extends BaseController {
 
     {
         Map<String, Object> result = new HashMap<>();
-        result = userService.register(loginName, loginPwd, code);
+        result = apiUserService.register(loginName, loginPwd, code);
         ServletUtils.writeToResponse(response, result);
     }
 
@@ -58,7 +58,7 @@ public class UserController extends BaseController {
 
     {
         Map<String, Object> result = new HashMap<>();
-        result = userService.login(loginName, loginPwd);
+        result = apiUserService.login(loginName, loginPwd);
         ServletUtils.writeToResponse(response, result);
     }
 
@@ -73,7 +73,7 @@ public class UserController extends BaseController {
 
     {
         Map<String, Object> result = new HashMap<>();
-        result = userService.resetPassword(loginName, loginPwd);
+        result = apiUserService.resetPassword(loginName, loginPwd);
         ServletUtils.writeToResponse(response, result);
     }
 
@@ -89,7 +89,7 @@ public class UserController extends BaseController {
 
     {
         Map<String, Object> result = new HashMap<>();
-        result = smsService.sendSms(loginName, type);
+        result = apiSmsService.sendSms(loginName, type);
         ServletUtils.writeToResponse(response, result);
     }
 
@@ -107,7 +107,7 @@ public class UserController extends BaseController {
 
     {
         Map<String, Object> result = new HashMap<>();
-        result = smsService.checkCode(loginName, type, code);
+        result = apiSmsService.checkCode(loginName, type, code);
         ServletUtils.writeToResponse(response, result);
     }
 
@@ -128,7 +128,7 @@ public class UserController extends BaseController {
 
     {
         Map<String, Object> result = new HashMap<>();
-        result = userService.applyCash(userId, code, receiver, alipayAccount, amount);
+        result = apiUserService.applyCash(userId, code, receiver, alipayAccount, amount);
         ServletUtils.writeToResponse(response, result);
     }
 
@@ -143,7 +143,7 @@ public class UserController extends BaseController {
                            @RequestParam(value = "current") int current,
                            @RequestParam(value = "pageSize") int pageSize) {
         Map<String, Object> result = new HashMap<>();
-        Page<GoodsOrder> page = userService.goodsOrder(userId, current, pageSize);
+        Page<GoodsOrder> page = apiUserService.goodsOrder(userId, current, pageSize);
         result.put(Constant.RESPONSE_DATA, page.getResult());
         result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
@@ -170,7 +170,7 @@ public class UserController extends BaseController {
                            @RequestParam(value = "detailAddr") String detailAddr,
                            @RequestParam(value = "mobile") String mobile) {
         Map<String, Object> result = new HashMap<>();
-        result = userService.saveShippingAddr(userId, province, city,area,detailAddr,mobile,name);
+        result = apiUserService.saveShippingAddr(userId, province, city,area,detailAddr,mobile,name);
         ServletUtils.writeToResponse(response, result);
     }
 }

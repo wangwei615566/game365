@@ -10,6 +10,7 @@ import com.wz.cashloan.core.common.util.MD5;
 import com.wz.cashloan.core.common.util.StringUtil;
 import com.wz.cashloan.core.mapper.GameOrderMapper;
 import com.wz.cashloan.core.mapper.GoodsOrderMapper;
+import com.wz.cashloan.core.mapper.UserAmountBillMapper;
 import com.wz.cashloan.core.mapper.UserAmountMapper;
 import com.wz.cashloan.core.mapper.UserCashLogMapper;
 import com.wz.cashloan.core.mapper.UserMapper;
@@ -17,17 +18,16 @@ import com.wz.cashloan.core.mapper.UserShippingAddrMapper;
 import com.wz.cashloan.core.model.GoodsOrder;
 import com.wz.cashloan.core.model.User;
 import com.wz.cashloan.core.model.UserAmount;
+import com.wz.cashloan.core.model.UserAmountBill;
 import com.wz.cashloan.core.model.UserCashLog;
 import com.wz.cashloan.core.model.UserShippingAddr;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
-import tool.util.BigDecimalUtil;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,15 +36,15 @@ import java.util.Map;
  * <p>Time: 2018/8/23 23:12
  */
 @Service
-public class UserService {
-    private static final Logger logger = Logger.getLogger(UserService.class);
+public class ApiUserService {
+    private static final Logger logger = Logger.getLogger(ApiUserService.class);
 
     @Resource
     private UserMapper userMapper;
     @Resource
     private UserAmountMapper userAmountMapper;
     @Resource
-    private SmsService smsService;
+    private ApiSmsService apiSmsService;
     @Resource
     private UserCashLogMapper userCashLogMapper;
     @Resource
@@ -53,6 +53,8 @@ public class UserService {
     private UserShippingAddrMapper userShippingAddrMapper;
     @Resource
     private GameOrderMapper gameOrderMapper;
+    @Resource
+    private UserAmountBillMapper userAmountBillMapper;
 
     public Map register(String loginName, String loginPwd, String code) {
         Map result = new HashMap();
@@ -69,7 +71,7 @@ public class UserService {
                 result.put(Constant.RESPONSE_CODE, "参数有误");
                 return result;
             }
-            result = smsService.checkCode(loginName, SmsModel.SMS_TYPE_REGISTER, code);
+            result = apiSmsService.checkCode(loginName, SmsModel.SMS_TYPE_REGISTER, code);
             if (!"200".equals(result.get(Constant.RESPONSE_CODE))) {
                 return result;
             }
@@ -179,7 +181,7 @@ public class UserService {
                 return result;
             }
             //核验验证码
-            result = smsService.checkCode(user.getLoginName(), SmsModel.SMS_TYPE_OPERATOR, code);
+            result = apiSmsService.checkCode(user.getLoginName(), SmsModel.SMS_TYPE_OPERATOR, code);
             if (!"200".equals(result.get(Constant.RESPONSE_CODE))) {
                 return result;
             }
@@ -355,4 +357,77 @@ public class UserService {
         return res;
 
     }
+
+    public JSONObject myFinishOrder(Long userId, int current, int pageSize) {
+        JSONObject res = new JSONObject();
+        PageHelper.startPage(current, pageSize);
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("userId", userId);
+        queryMap.put("overState", "20");
+        List<String> list = gameOrderMapper.selectOrderByStateAndUserId(queryMap);
+
+        Page<String> stringPage = (Page<String>) list;
+        List<String> stringList = stringPage.getResult();
+        JSONArray data = new JSONArray();
+//        Page<JSONObject> jsonObjectPage = new Page<>(stringPage.getPageNum(),stringPage.getPageSize());
+        for (int i = 0; i < stringList.size(); i++) {
+            JSONObject object = new JSONObject();
+            String orderNo = stringList.get(i);
+            List<Map> mapList = gameOrderMapper.selectMapByOrderNo(orderNo);
+
+            UserAmountBill userAmountBill = userAmountBillMapper.findByOrderNo(orderNo);
+            if (mapList.size() > 0) {
+                Map objectMap = mapList.get(0);
+                String createTime = String.valueOf(objectMap.get("create_time"));
+                if ("1".equals(String.valueOf(objectMap.get("type")))) {
+                    object.put("type", "单注");
+                } else {
+                    object.put("type", mapList.size() + "串1");
+                }
+
+                JSONArray jsonArray = new JSONArray();
+                Double petScore = 0.0;
+
+                for (int j = 0; j < mapList.size(); j++) {
+                    Map map = mapList.get(j);
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("team", map.get("team"));
+                    jsonObject.put("betName", map.get("name"));
+                    String state = "";
+                    if (map.get("result") == null) {
+                        state = "进行中";
+                    } else {
+                        if (map.get("result") == 1) {
+                            state = "输";
+                        } else {
+                            state = "赢";
+                        }
+                    }
+                    jsonObject.put("state", state);
+                    jsonObject.put("odds", map.get("odds"));
+                    jsonArray.add(jsonObject);
+
+                    petScore += Double.parseDouble(String.valueOf(map.get("score")));
+                }
+
+                object.put("petScore", petScore);
+                object.put("realScore", userAmountBill.getTotal());
+                object.put("createTime", createTime);
+                object.put("gamePets", jsonArray);
+
+                data.add(object);
+            }
+
+        }
+        JSONObject page = new JSONObject();
+        page.put("pageNum", stringPage.getPageNum());
+        page.put("pageSize", stringPage.getPageSize());
+        page.put("total", stringPage.getTotal());
+        page.put("pages", stringPage.getPages());
+        res.put("data", data);
+        res.put("page", page);
+        return res;
+
+    }
+
 }

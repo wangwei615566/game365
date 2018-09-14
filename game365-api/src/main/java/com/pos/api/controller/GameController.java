@@ -1,7 +1,7 @@
 package com.pos.api.controller;
 
 import com.github.pagehelper.Page;
-import com.pos.api.service.GameService;
+import com.pos.api.service.ApiGameService;
 import com.wz.cashloan.core.common.context.Constant;
 import com.wz.cashloan.core.common.util.JsonUtil;
 import com.wz.cashloan.core.common.util.RdPage;
@@ -25,7 +25,7 @@ import java.util.Map;
 @RequestMapping("/api")
 public class GameController extends BaseController {
     @Resource
-    private GameService gameService;
+    private ApiGameService apiGameService;
 
     /**
      * 赛事列表
@@ -40,7 +40,7 @@ public class GameController extends BaseController {
 
     {
         Map<String, Object> params = JsonUtil.parse(searchParams, Map.class);
-        Page<GameModel> page = gameService.listGame(params, current, pageSize);
+        Page<GameModel> page = apiGameService.listGame(params, current, pageSize);
         Map<String, Object> result = new HashMap<>();
         result.put(Constant.RESPONSE_DATA, page.getResult());
         result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));
@@ -62,7 +62,7 @@ public class GameController extends BaseController {
 
     {
 //        Map<String, Object> params = JsonUtil.parse(searchParams, Map.class);
-        Map data = gameService.listBet(gameId, userId);
+        Map data = apiGameService.listBet(gameId, userId);
         Map<String, Object> result = new HashMap<>();
         result.put(Constant.RESPONSE_DATA, data);
 //        result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));

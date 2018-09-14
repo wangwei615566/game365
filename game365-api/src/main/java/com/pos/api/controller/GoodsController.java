@@ -1,7 +1,7 @@
 package com.pos.api.controller;
 
 import com.github.pagehelper.Page;
-import com.pos.api.service.GoodsService;
+import com.pos.api.service.ApiGoodsService;
 import com.wz.cashloan.core.common.context.Constant;
 import com.wz.cashloan.core.common.util.JsonUtil;
 import com.wz.cashloan.core.common.util.RdPage;
@@ -25,7 +25,7 @@ import java.util.Map;
 @RequestMapping("/api")
 public class GoodsController extends BaseController {
     @Resource
-    private GoodsService goodsService;
+    private ApiGoodsService goodsService;
 
     /**
      * 获取商品列表

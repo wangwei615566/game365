@@ -28,8 +28,8 @@ import java.util.Map;
  * <p>Time: 2018/8/23 23:41
  */
 @Service
-public class SmsService {
-    private static final Logger logger = Logger.getLogger(SmsService.class);
+public class ApiSmsService {
+    private static final Logger logger = Logger.getLogger(ApiSmsService.class);
     @Resource
     private UserMapper userMapper;
     @Resource

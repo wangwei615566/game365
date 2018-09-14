@@ -20,7 +20,7 @@ import java.util.Random;
  * Created by Hbx on 2018/8/24.
  */
 @Service
-public class GoodsService {
+public class ApiGoodsService {
     @Autowired
     private GoodsMapper goodsMapper;
     @Autowired

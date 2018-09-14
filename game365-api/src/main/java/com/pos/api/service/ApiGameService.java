@@ -19,7 +19,7 @@ import java.util.Map;
  * Created by Hbx on 2018/8/24.
  */
 @Service
-public class GameService {
+public class ApiGameService {
     @Autowired
     private GameMapper gameMapper;
     @Autowired

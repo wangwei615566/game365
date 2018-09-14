@@ -1,10 +1,8 @@
 package com.pos.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.Page;
-import com.pos.api.service.UserService;
+import com.pos.api.service.ApiUserService;
 import com.wz.cashloan.core.common.context.Constant;
-import com.wz.cashloan.core.common.util.RdPage;
 import com.wz.cashloan.core.common.util.ServletUtils;
 import com.wz.cashloan.core.common.web.controller.BaseController;
 import org.springframework.context.annotation.Scope;
@@ -24,7 +22,7 @@ import java.util.Map;
 @RequestMapping("/api")
 public class OrderController extends BaseController {
     @Resource
-    private UserService userService;
+    private ApiUserService apiUserService;
 
     /**
      * 我的订单 - 进行中
@@ -38,7 +36,7 @@ public class OrderController extends BaseController {
 
     {
         Map<String, Object> result = new HashMap<>();
-        JSONObject page = userService.myGoingOrder(userId, current, pageSize);
+        JSONObject page = apiUserService.myGoingOrder(userId, current, pageSize);
         result.put(Constant.RESPONSE_DATA, page.getJSONArray("data"));
         result.put(Constant.RESPONSE_DATA_PAGE, page.getJSONObject("page"));
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
@@ -58,9 +56,9 @@ public class OrderController extends BaseController {
 
     {
         Map<String, Object> result = new HashMap<>();
-//        Page<JSONObject> page = userService.myGoingOrder(userId, current, pageSize);
-//        result.put(Constant.RESPONSE_DATA, page.getResult());
-//        result.put(Constant.RESPONSE_DATA_PAGE, new RdPage(page));
+        JSONObject page = apiUserService.myFinishOrder(userId, current, pageSize);
+        result.put(Constant.RESPONSE_DATA, page.getJSONArray("data"));
+        result.put(Constant.RESPONSE_DATA_PAGE, page.getJSONObject("page"));
         result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
         result.put(Constant.RESPONSE_CODE_MSG, "查询成功");
         ServletUtils.writeToResponse(response, result);

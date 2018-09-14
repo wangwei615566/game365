@@ -30,7 +30,7 @@ import java.util.Map;
  * <p>Time: 2018/8/29 21:10
  */
 @Service
-public class GameBetService {
+public class ApiGameBetService {
     @Resource
     private ShoppingCartMapper shoppingCartMapper;
     @Resource
