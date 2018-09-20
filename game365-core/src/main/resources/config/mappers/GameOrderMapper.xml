@@ -24,6 +24,23 @@
     from game_order
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="listSelect" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select
+    o.id,o.order_no as orderNo,o.score,o.type,o.state,o.result,o.over_state as overState,b.name,u.login_name as loginName,
+    o.create_time as createTime
+    from game_order o LEFT JOIN game_bet b on o.game_bet_id=b.id LEFT JOIN user u on o.user_id=u.id
+      <trim prefix="where" prefixOverrides="and|or">
+          <if test="orderNo != null and orderNo != ''">
+              and o.order_no = #{orderNo,jdbcType=VARCHAR}
+          </if>
+          <if test="type != null and type != ''">
+              and o.type = #{type,jdbcType=TINYINT}
+          </if>
+          <if test="state != null">
+              and o.state = #{state,jdbcType=VARCHAR}
+          </if>
+      </trim>
+  </select>
   <select id="selectMapByOrderNo" resultType="java.util.Map" parameterType="java.lang.String" >
      SELECT
         go.create_time,

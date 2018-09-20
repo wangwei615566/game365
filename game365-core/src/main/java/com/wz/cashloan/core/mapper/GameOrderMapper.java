@@ -32,4 +32,6 @@ public interface GameOrderMapper {
 
     List<Map> selectMapByOrderNo(String orderNo);
 
+    List<Map<String,Object>> listSelect(Map<String, Object> objectMap);
+
 }

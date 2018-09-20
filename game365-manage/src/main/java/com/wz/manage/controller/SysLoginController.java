@@ -99,11 +99,12 @@ public class SysLoginController extends BaseController {
 	}
 
 	@RequestMapping(value = "/system/user/loginOut.htm")
-	public void loginOut() throws Exception {
+	public void loginOut(HttpSession session) throws Exception {
 		Map<String, Object> res = new HashMap<>();
 		try {
-			Subject user = SecurityUtils.getSubject();
-			user.logout();
+//			Subject user = SecurityUtils.getSubject();
+//			user.logout();
+			session.removeAttribute("SysUser");
 			res.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
 			res.put(Constant.RESPONSE_CODE_MSG,"退出成功");
 		} catch (Exception e) {
@@ -164,7 +165,7 @@ public class SysLoginController extends BaseController {
 	@RequestMapping("/system/user/find.htm")
 	public void findUser(HttpServletResponse response, HttpServletRequest request) throws Exception{
 		Map<String, Object> responsemap = new HashMap<String, Object>();
-		SysUser sysUser = this.getLoginUser(request);
+		SysUser sysUser = (SysUser) request.getSession().getAttribute("SysUser");
 //		if (null==sysUser) {
 //			responsemap.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
 //			responsemap.put(Constant.RESPONSE_CODE_MSG, Constant.OPERATION_FAIL);
