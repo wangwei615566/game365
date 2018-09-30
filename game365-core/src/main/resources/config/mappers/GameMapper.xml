@@ -17,6 +17,7 @@
     <result column="state" property="state" jdbcType="TINYINT" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="guess_over_time" property="guessOverTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <resultMap id="ModelMap" type="com.wz.cashloan.core.model.GameModel" >
     <id column="id" property="id" jdbcType="BIGINT" />
@@ -32,13 +33,12 @@
     <result column="contest_date" property="contestDate" jdbcType="DATE" />
     <result column="contest_time" property="contestTime" jdbcType="TIME" />
     <result column="state" property="state" jdbcType="TINYINT" />
-    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="guess_over_time" property="guessOverTime" jdbcType="TIMESTAMP" />
   </resultMap>
 
   <sql id="Base_Column_List" >
     id, external_game_code, game_classify_id, `name`,left_team, left_team_img, left_score,right_team, right_team_img,right_score,
-    contest_date, contest_time, state, update_time, create_time
+    contest_date, contest_time, state, update_time, create_time ,guess_over_time
   </sql>
 
   <sql id="searchBy">

@@ -14,7 +14,7 @@ public class GameBet {
 
     private BigDecimal odds;
 
-    private Date guessOverTime;
+
 
     private Date updateTime;
 
@@ -58,14 +58,6 @@ public class GameBet {
 
     public void setOdds(BigDecimal odds) {
         this.odds = odds;
-    }
-
-    public Date getGuessOverTime() {
-        return guessOverTime;
-    }
-
-    public void setGuessOverTime(Date guessOverTime) {
-        this.guessOverTime = guessOverTime;
     }
 
     public Date getUpdateTime() {

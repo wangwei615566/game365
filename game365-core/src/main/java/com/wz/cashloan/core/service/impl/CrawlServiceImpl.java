@@ -92,6 +92,7 @@ public class CrawlServiceImpl implements CrawlService {
                             game.setState(state);
                             game.setContestDate(match.getMatchTime());
                             game.setContestTime(match.getMatchTime());
+                            game.setGuessOverTime(match.getGuessOverTime());
                             gameMapper.insert(game);
                         } else {
                             if ("待定".equals(game.getRightTeam())) {
@@ -107,7 +108,7 @@ public class CrawlServiceImpl implements CrawlService {
                                 game.setRightScore(match.getSurveyRightScore());
                             }
                             game.setState(state);
-
+                            game.setGuessOverTime(match.getGuessOverTime());
                             gameMapper.updateByPrimaryKeySelective(game);
                         }
 
@@ -144,7 +145,7 @@ public class CrawlServiceImpl implements CrawlService {
 
                             GameBet gameBet = new GameBet();
                             gameBet.setGameId(gameId);
-                            gameBet.setGuessOverTime(guess.getGuessOverTime());
+//                            gameBet.setGuessOverTime(guess.getGuessOverTime());
                             Date guessOverTime = guess.getGuessOverTime();
                             List<GuessOption> guessOptionList = guess.getOptions();
                             for (int l = 0; l < guessOptionList.size(); l++) {
@@ -159,7 +160,7 @@ public class CrawlServiceImpl implements CrawlService {
                                     gameBet.setName(guessName);
                                     gameBet.setOdds(BigDecimal.valueOf(guessOption.getOdds()));
                                     gameBet.setTeam(guessOption.getName());
-                                    gameBet.setGuessOverTime(guessOverTime);
+//                                    gameBet.setGuessOverTime(guessOverTime);
                                     gameBet.setGameId(gameId);
 
                                     gameBetMapper.insert(gameBet);

@@ -33,6 +33,7 @@ public class Game {
 
     private Date createTime;
 
+    private Date guessOverTime;
 
     public Long getId() {
         return id;
@@ -153,4 +154,14 @@ public class Game {
     public void setRightScore(Integer rightScore) {
         this.rightScore = rightScore;
     }
+
+    public Date getGuessOverTime() {
+        return guessOverTime;
+    }
+
+    public void setGuessOverTime(Date guessOverTime) {
+        this.guessOverTime = guessOverTime;
+    }
+
+
 }
