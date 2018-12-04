@@ -59,6 +59,7 @@ public class QuartzListener implements ServletContextListener,HttpSessionAttribu
 			QuartzManager.startJobs();
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("启动定时任务异常--->" + e.getMessage(), e);
 		}
 		logger.info("【启动所有任务】结束...");

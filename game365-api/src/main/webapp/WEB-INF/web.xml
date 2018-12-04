@@ -103,7 +103,14 @@
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
+	<filter>
+		<filter-name>header</filter-name>
+		<filter-class>com.wz.cashloan.core.common.web.filter.HeaderFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>header</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 	<filter>
 		<filter-name>performanceMonitor</filter-name>
 		<filter-class>com.wz.cashloan.core.common.web.filter.PerformanceMonitorFilter</filter-class>
