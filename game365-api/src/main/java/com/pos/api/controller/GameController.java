@@ -29,6 +29,7 @@ public class GameController extends BaseController {
 
     /**
      * 赛事列表
+     *
      * @param searchParams
      * @param current
      * @param pageSize
@@ -51,6 +52,7 @@ public class GameController extends BaseController {
 
     /**
      * 赛事竞猜项
+     *
      * @param gameId
      * @param userId
      */
@@ -71,6 +73,19 @@ public class GameController extends BaseController {
         ServletUtils.writeToResponse(response, result);
     }
 
+    /**
+     * 赛事类别
+     */
+    @RequestMapping("/game/gameClassify.htm")
+    public void gameClassify()
+//                        @RequestParam(value = "current") int current,
+//                        @RequestParam(value = "pageSize") int pageSize)
+
+    {
+//        Map<String, Object> params = JsonUtil.parse(searchParams, Map.class);
+        Map data = apiGameService.gameClassifies();
+        ServletUtils.writeToResponse(response, data);
+    }
 
 
 }
