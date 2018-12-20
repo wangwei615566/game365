@@ -72,7 +72,7 @@ public class ApiUserService {
                 return result;
             }
             result = apiSmsService.checkCode(loginName, SmsModel.SMS_TYPE_REGISTER, code);
-            if (!"200".equals(result.get(Constant.RESPONSE_CODE))) {
+            if (!"200".equals(result.get(Constant.RESPONSE_CODE).toString())) {
                 return result;
             }
             loginPwd = MD5.md5(loginPwd);
