@@ -115,6 +115,7 @@ public class ApiUserService {
                 result.put(Constant.RESPONSE_CODE_MSG, "密码错误");
                 return result;
             }
+            result.put("userId", user.getId());
             result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
             result.put(Constant.RESPONSE_CODE_MSG, "登录成功");
         } catch (Exception e) {

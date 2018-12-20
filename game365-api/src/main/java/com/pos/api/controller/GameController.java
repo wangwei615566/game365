@@ -2,12 +2,14 @@ package com.pos.api.controller;
 
 import com.github.pagehelper.Page;
 import com.pos.api.service.ApiGameService;
+import com.pos.api.service.ApiUserService;
 import com.wz.cashloan.core.common.context.Constant;
 import com.wz.cashloan.core.common.util.JsonUtil;
 import com.wz.cashloan.core.common.util.RdPage;
 import com.wz.cashloan.core.common.util.ServletUtils;
 import com.wz.cashloan.core.common.web.controller.BaseController;
 import com.wz.cashloan.core.model.GameModel;
+import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/api")
 public class GameController extends BaseController {
+    private static final Logger logger = Logger.getLogger(GameController.class);
     @Resource
     private ApiGameService apiGameService;
 
@@ -40,6 +43,7 @@ public class GameController extends BaseController {
                      @RequestParam(value = "pageSize") int pageSize)
 
     {
+        logger.info("请求参数 searchParams：" + searchParams);
         Map<String, Object> params = JsonUtil.parse(searchParams, Map.class);
         Page<GameModel> page = apiGameService.listGame(params, current, pageSize);
         Map<String, Object> result = new HashMap<>();

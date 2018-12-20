@@ -110,7 +110,7 @@ public class ApiSmsService {
         result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
         result.put(Constant.RESPONSE_CODE_MSG, "验证失败");
         User user = userMapper.selectByLoginName(loginName);
-        if (user == null) {
+        if (user == null && !SmsModel.SMS_TYPE_REGISTER.equals(type)) {
             result.put(Constant.RESPONSE_CODE, Constant.FAIL_CODE_VALUE);
             result.put(Constant.RESPONSE_CODE_MSG, "用户不存在!");
             return result;
