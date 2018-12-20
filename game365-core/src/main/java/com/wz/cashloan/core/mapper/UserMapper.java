@@ -29,4 +29,6 @@ public interface UserMapper {
 //    Map<String,Object>findLevelToUserId(Long userId);
 
     List<Map<String,Object>> userList(Map<String,Object> param);
+
+    Map myCenter(Long id);
 }

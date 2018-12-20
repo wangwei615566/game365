@@ -431,4 +431,11 @@ public class ApiUserService {
 
     }
 
+    public Map center(Long userId){
+        Map<String,Object> result = new HashMap<>();
+        result.put(Constant.RESPONSE_DATA,userMapper.myCenter(userId));
+        result.put(Constant.RESPONSE_CODE, Constant.SUCCEED_CODE_VALUE);
+        result.put(Constant.RESPONSE_CODE_MSG, "请求成功");
+        return result;
+    }
 }

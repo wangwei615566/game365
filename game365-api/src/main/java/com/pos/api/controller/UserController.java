@@ -32,6 +32,7 @@ public class UserController extends BaseController {
 
     /**
      * 注册
+     *
      * @param loginName
      * @param loginPwd
      * @param code
@@ -49,6 +50,7 @@ public class UserController extends BaseController {
 
     /**
      * 登录
+     *
      * @param loginName
      * @param loginPwd
      */
@@ -64,6 +66,7 @@ public class UserController extends BaseController {
 
     /**
      * 重置密码
+     *
      * @param loginName
      * @param loginPwd
      */
@@ -113,6 +116,7 @@ public class UserController extends BaseController {
 
     /**
      * 红包提现申请
+     *
      * @param userId
      * @param code
      * @param amount
@@ -134,6 +138,7 @@ public class UserController extends BaseController {
 
     /**
      * 获取购买请求列表
+     *
      * @param userId
      * @param current
      * @param pageSize
@@ -153,6 +158,7 @@ public class UserController extends BaseController {
 
     /**
      * 更新收货地址
+     *
      * @param userId
      * @param province
      * @param city
@@ -170,7 +176,18 @@ public class UserController extends BaseController {
                            @RequestParam(value = "detailAddr") String detailAddr,
                            @RequestParam(value = "mobile") String mobile) {
         Map<String, Object> result = new HashMap<>();
-        result = apiUserService.saveShippingAddr(userId, province, city,area,detailAddr,mobile,name);
+        result = apiUserService.saveShippingAddr(userId, province, city, area, detailAddr, mobile, name);
+        ServletUtils.writeToResponse(response, result);
+    }
+
+    /**
+     * @param userId
+     */
+    @RequestMapping("/user/center.htm")
+    public void goodsOrder(@RequestParam(value = "userId") Long userId
+    ) {
+        Map<String, Object> result = new HashMap<>();
+        result = apiUserService.center(userId);
         ServletUtils.writeToResponse(response, result);
     }
 }

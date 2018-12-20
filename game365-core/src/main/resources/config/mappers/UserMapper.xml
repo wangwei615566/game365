@@ -213,4 +213,7 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="myCenter" resultType="java.util.Map" parameterType="java.lang.Long" >
+  SELECT a.login_name as loginName,b.total as total from `user` a LEFT JOIN user_amount b on a.id = b.user_id WHERE a.id = #{id,jdbcType=BIGINT}
+  </select>
 </mapper>
