@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 爬取
@@ -76,6 +78,7 @@ public class Crawling {
     }
 
     /**
+     *
      * @return
      */
     public static List<Match> crawlAllMatchGuessStatus() {
@@ -192,9 +195,23 @@ public class Crawling {
             }
         }
         //获取比赛竞猜状态
-        Elements matchRight = match_doc.getElementsByClass("matchRight");
+        String html = match_doc.html();
+        Document guesslist = null;
+        String game_id = "";
+        Pattern pattern = Pattern.compile("var game_id = \"(.*?)\"");
+        Matcher matcher = pattern.matcher(html);
+        while (matcher.find()) {
+            game_id = matcher.group(1);
+        }
+        try {
+            guesslist = Jsoup.connect(baseUrl + "match/getguesslist?id="+game_id).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        Elements matchRight = guesslist.getElementsByClass("system-message");
         if (matchRight != null && matchRight.size() > 0) {
-            Element div = matchRight.get(0).child(0);
+            Element div = matchRight.get(0).child(2);
             if (div.className().equals("field-guess")) {
                 match.setGuessStatus("field-guess");
             }
@@ -206,8 +223,8 @@ public class Crawling {
             }
         }
         //获取比赛竞猜信息
-        if (match.getGuessStatus() != null && match.getGuessStatus().equals("open-guess")) ;
-        Elements open_guess = match_doc.getElementsByClass("open-guess");
+        if (match.getGuessStatus()!=null&&match.getGuessStatus().equals("open-guess")) ;
+        Elements open_guess = guesslist.getElementsByClass("open-guess");
         if (open_guess != null && open_guess.size() > 0) {
             Element p = open_guess.get(0).child(0);
             if (p != null && p.children().size() > 1 && p.child(1) != null && !p.child(1).text().isEmpty()) {//获取比赛竞猜结束时间
@@ -261,8 +278,8 @@ public class Crawling {
         Date start = new Date();
         List<MatchType> list1 = crawlAll();
         System.out.println(list1);
-        List<Match> list = crawlAllMatchGuessStatus();
-        System.out.println(list);
+//        List<Match> list = crawlAllMatchGuessStatus();
+//        System.out.println(list);
         System.out.println(new Date().getTime() - start.getTime());
     }
 }
