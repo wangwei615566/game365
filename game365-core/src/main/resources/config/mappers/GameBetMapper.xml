@@ -39,10 +39,10 @@
   </delete>
   <insert id="insert" parameterType="com.wz.cashloan.core.model.GameBet" >
     insert into game_bet (id, game_id, name, 
-      team, odds, guess_over_time, 
+      team, odds,
       update_time, create_time)
     values (#{id,jdbcType=BIGINT}, #{gameId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
-      #{team,jdbcType=VARCHAR}, #{odds,jdbcType=DECIMAL}, #{guessOverTime,jdbcType=TIMESTAMP}, 
+      #{team,jdbcType=VARCHAR}, #{odds,jdbcType=DECIMAL},
       #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wz.cashloan.core.model.GameBet" >
@@ -86,9 +86,7 @@
       <if test="odds != null" >
         #{odds,jdbcType=DECIMAL},
       </if>
-      <if test="guessOverTime != null" >
-        #{guessOverTime,jdbcType=TIMESTAMP},
-      </if>
+
       <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
       </if>

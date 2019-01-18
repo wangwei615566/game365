@@ -21,7 +21,6 @@ import java.util.regex.Pattern;
 
 /**
  * 爬取
- *
  */
 public class Crawling {
     private static String baseUrl = "https://www.xxdianjing.com/";
@@ -78,7 +77,6 @@ public class Crawling {
     }
 
     /**
-     *
      * @return
      */
     public static List<Match> crawlAllMatchGuessStatus() {
@@ -182,11 +180,11 @@ public class Crawling {
                     Elements tds = tr.children();
                     for (int i = 1; i < tds.size(); i++) {
                         if (tds.get(0).text().equals(match.getSurveyLeftTeamName()) && tds.get(i).text().trim().length() > 0) {
-                            if (!tds.get(i).text().equals("-")) {
+                            if (!tds.get(i).text().equals("-")&&tds.get(i).text().matches("[0-9]{1,}")) {
                                 match.getSurveyLeftScoreList().add(Integer.parseInt(tds.get(i).text()));
                             }
                         } else if (tds.get(0).text().equals(match.getSurveyRightTeamName()) && tds.get(i).text().trim().length() > 0) {
-                            if (!tds.get(i).text().equals("-")) {
+                            if (!tds.get(i).text().equals("-")&&tds.get(i).text().matches("[0-9]{1,}")) {
                                 match.getSurveyRightScoreList().add(Integer.parseInt(tds.get(i).text()));
                             }
                         }
@@ -204,7 +202,7 @@ public class Crawling {
             game_id = matcher.group(1);
         }
         try {
-            guesslist = Jsoup.connect(baseUrl + "match/getguesslist?id="+game_id).get();
+            guesslist = Jsoup.connect(baseUrl + "match/getguesslist?id=" + game_id).get();
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -223,7 +221,7 @@ public class Crawling {
             }
         }
         //获取比赛竞猜信息
-        if (match.getGuessStatus()!=null&&match.getGuessStatus().equals("open-guess")) ;
+        if (match.getGuessStatus() != null && match.getGuessStatus().equals("open-guess")) ;
         Elements open_guess = guesslist.getElementsByClass("open-guess");
         if (open_guess != null && open_guess.size() > 0) {
             Element p = open_guess.get(0).child(0);

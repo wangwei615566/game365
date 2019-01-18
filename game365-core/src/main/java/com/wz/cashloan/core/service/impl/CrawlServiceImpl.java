@@ -92,7 +92,9 @@ public class CrawlServiceImpl implements CrawlService {
                             game.setState(state);
                             game.setContestDate(match.getMatchTime());
                             game.setContestTime(match.getMatchTime());
-                            game.setGuessOverTime(match.getGuessOverTime());
+                            if(match.getGuessOverTime() != null) {
+                                game.setGuessOverTime(match.getGuessOverTime());
+                            }
                             gameMapper.insert(game);
                         } else {
                             if ("待定".equals(game.getRightTeam())) {
@@ -108,7 +110,9 @@ public class CrawlServiceImpl implements CrawlService {
                                 game.setRightScore(match.getSurveyRightScore());
                             }
                             game.setState(state);
-                            game.setGuessOverTime(match.getGuessOverTime());
+                            if(match.getGuessOverTime() != null) {
+                                game.setGuessOverTime(match.getGuessOverTime());
+                            }
                             gameMapper.updateByPrimaryKeySelective(game);
                         }
 
@@ -227,23 +231,24 @@ public class CrawlServiceImpl implements CrawlService {
             //保存赛事进度
             List<Integer> lefts = match.getSurveyLeftScoreList();
             List<Integer> rights = match.getSurveyRightScoreList();
+            if(lefts.size() == rights.size()) {
+                for (int k = 0; k < lefts.size(); k++) {
+                    String round = String.valueOf(k + 1);
+                    queryMap.put("gameId", gameId);
+                    queryMap.put("round", round);
+                    GameProcess gameProcess = gameProcessMapper.findByMap(queryMap);
+                    if (gameProcess == null) {
+                        gameProcess = new GameProcess();
+                        gameProcess.setGameId(gameId);
+                        gameProcess.setProcessName("单局比分");
+                        gameProcess.setLeftScore(lefts.get(k));
+                        gameProcess.setRightScore(rights.get(k));
+                        gameProcess.setRound(round);
 
-            for (int k = 0; k < lefts.size(); k++) {
-                String round = String.valueOf(k + 1);
-                queryMap.put("gameId", gameId);
-                queryMap.put("round", round);
-                GameProcess gameProcess = gameProcessMapper.findByMap(queryMap);
-                if (gameProcess == null) {
-                    gameProcess = new GameProcess();
-                    gameProcess.setGameId(gameId);
-                    gameProcess.setProcessName("单局比分");
-                    gameProcess.setLeftScore(lefts.get(k));
-                    gameProcess.setRightScore(rights.get(k));
-                    gameProcess.setRound(round);
+                        gameProcessMapper.insert(gameProcess);
+                    }
 
-                    gameProcessMapper.insert(gameProcess);
                 }
-
             }
 
 
